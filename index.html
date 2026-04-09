@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Drawer Test</title>
+    <style>
+        :root {
+            --primary-teal: #008b8b; /* Matching Apollo 247 theme */
+            --bg-light: #f4f7f6;
+            --text-dark: #333;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #e5e5e5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Test Button */
+        .open-btn {
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            background: var(--primary-teal);
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        /* Overlay Background */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 999;
+        }
+
+        /* Drawer - Globe Assist Style */
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: -400px; /* Hidden by default */
+            width: 380px;
+            height: 100%;
+            background: white;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            transition: right 0.3s ease-in-out;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .drawer.active {
+            right: 0;
+        }
+
+        /* Header Section */
+        .drawer-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .close-btn {
+            font-size: 30px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-profile img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-info strong {
+            display: block;
+            font-size: 18px;
+            text-transform: lowercase;
+        }
+
+        .user-info span {
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* Menu Section - Apollo 247 Style */
+        .drawer-content {
+            padding: 20px;
+            background-color: var(--bg-light);
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .menu-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: all 0.2s ease;
+        }
+
+        .menu-card:hover {
+            border-color: var(--primary-teal);
+            transform: translateY(-2px);
+        }
+
+        .menu-card .icon {
+            margin-right: 15px;
+            font-size: 20px;
+            width: 25px;
+            text-align: center;
+        }
+
+        .menu-card .label {
+            flex-grow: 1;
+            font-weight: 500;
+        }
+
+        .menu-card .arrow {
+            color: var(--primary-teal);
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .logout-card {
+            margin-top: 20px;
+            border-left: 4px solid #ff4d4d;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="open-btn" onclick="toggleDrawer()">Open Account Menu</button>
+
+    <div class="overlay" id="overlay" onclick="toggleDrawer()"></div>
+
+    <div class="drawer" id="accountDrawer">
+        <div class="drawer-header">
+            <div class="header-top">
+                <h3>Account Menu</h3>
+                <button class="close-btn" onclick="toggleDrawer()">&times;</button>
+            </div>
+            <div class="user-profile">
+                <img src="https://via.placeholder.com/50" alt="Rohit">
+                <div class="user-info">
+                    <strong>rohit</strong>
+                    <span>7869874352</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="drawer-content">
+            <a href="#" class="menu-card">
+                <span class="icon">👥</span>
+                <span class="label">Manage Family Members</span>
+                <span class="arrow">›</span>
+            </a>
+            <a href="#" class="menu-card">
+                <span class="icon">💳</span>
+                <span class="label">Transactions and Payments</span>
+                <span class="arrow">›</span>
+            </a>
+            <a href="#" class="menu-card">
+                <span class="icon">🏥</span>
+                <span class="label">Health Records</span>
+                <span class="arrow">›</span>
+            </a>
+            <a href="#" class="menu-card">
+                <span class="icon">📍</span>
+                <span class="label">Address Book</span>
+                <span class="arrow">›</span>
+            </a>
+            <a href="#" class="menu-card">
+                <span class="icon">❓</span>
+                <span class="label">Need Help</span>
+                <span class="arrow">›</span>
+            </a>
+            
+            <a href="#" class="menu-card logout-card">
+                <span class="icon">🚪</span>
+                <span class="label" style="color: #ff4d4d;">Logout</span>
+                <span class="arrow">›</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function toggleDrawer() {
+            const drawer = document.getElementById('accountDrawer');
+            const overlay = document.getElementById('overlay');
+            
+            if (drawer.classList.contains('active')) {
+                drawer.classList.remove('active');
+                overlay.style.display = 'none';
+            } else {
+                drawer.classList.add('active');
+                overlay.style.display = 'block';
+            }
+        }
+    </script>  
+</body>
+</html>
