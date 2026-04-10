@@ -188,10 +188,6 @@ Route::prefix('user')->name('user.')->group(function () {
 
 });
 
-
-Route::get('/logout', function () {
-    Auth::guard('partner')->logout();
-})->name('logout');
 Route::post('partner/logout', [PartnerAuth::class, 'logout'])->name('partner.logout');
 
 
@@ -199,26 +195,29 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/web/user_home', [UserDashboardController::class, 'index'])->name('user_home');
 });
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/partner/dashboard', [PartnerDashboard::class, 'index'])->name('partner.partner_home');
-});
-
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-
 
 Route::middleware('auth:admin')->group(function () {
     Route::get('/admin/dashboard', [DashboardController::class, 'apiDashboard'])->name('admin.dashboard');
 });
 
 Route::middleware('auth:user')->group(function () {
-    Route::get('/home', [UserDashboardController::class, 'index'])->name('user.home');
 });
+
+    Route::get('/home', [UserDashboardController::class, 'index'])->name('user.home');
 
 Route::middleware('auth:partner')->group(function () {
     Route::get('/partner/home', [PartnerDashboard::class, 'index'])->name('partner.home');
-});
-
-Route::get('/partner/dashboard', [PartnerDashboard::class, 'dashboard'])->name('partner.dashboard');
+    Route::get('/partner/dashboard', [PartnerDashboard::class, 'dashboard'])->name('partner.dashboard');
     Route::get('/partner/show-links', [PartnerDashboard::class, 'showLinks'])->name('partner.show-links');
+    Route::get('/partner/my-service', [PartnerDashboard::class, 'services'])->name('partner.services');
+    Route::get('/partner/timeSlot', [PartnerDashboard::class, 'timeSlot'])->name('partner.timeSlot');
+    Route::get('/partner/notifications', [PartnerDashboard::class, 'notifications'])->name('partner.notifications');
+    Route::get('/partner/complaints', [PartnerDashboard::class, 'complaints'])->name('partner.complaints');
+    Route::get('/partner/services-history', [PartnerDashboard::class, 'serviceHistory'])->name('partner.serviceHistory');
+    Route::get('/partner/payments', [PartnerDashboard::class, 'payments'])->name('partner.payments');
+    Route::get('/partner/help', [PartnerDashboard::class, 'help'])->name('partner.help');
+
+});

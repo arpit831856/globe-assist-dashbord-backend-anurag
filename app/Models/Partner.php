@@ -16,6 +16,7 @@ class Partner extends Authenticatable
         'mobile',
         'email',
         'company',
+        'password',
         'type',
         'location',
         'country',

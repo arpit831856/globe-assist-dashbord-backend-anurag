@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Partner;
 
 use App\Http\Controllers\Controller;
@@ -28,32 +29,25 @@ class AuthController extends Controller
 
 
     public function login(Request $request)
-{
-    $request->validate([
-        'email'    => 'required',
-        'password' => 'required'
-    ]);
+    {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-    // Attempt login with partner guard
-    if (Auth::guard('partner')->attempt($request->only('email', 'password'))) {
-        
-        // ROLE CHECK
-        if (Auth::guard('partner')->user()->role !== 'partner') {
+        if (Auth::guard('partner')->attempt($credentials)) {
+            $request->session()->regenerate();
 
-            Auth::guard('partner')->logout();
-
-            return back()->with('error', 'You are not allowed to access partner login.');
+            return redirect()->route('partner.dashboard');
         }
 
-        return redirect()->route('partner.dashboard');
+        return back()->with('error', 'Invalid login details');
     }
-
-    return back()->with('error', 'Invalid login details');
-}
 
     public function logout()
     {
-       Auth::guard('partner')->logout();
+        Auth::guard('partner')->logout();
+
         return redirect()->route('partner.login');
     }
 }

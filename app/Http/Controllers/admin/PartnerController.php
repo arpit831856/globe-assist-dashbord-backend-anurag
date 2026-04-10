@@ -103,7 +103,6 @@ class PartnerController extends Controller
         $partner->email = $request->email;
         $partner->location = $request->location;
         $partner->country = $request->country;
-        $partner->role = 'partner';
         $partner->password = bcrypt($request->password);
 
         // ✅ Store files like User registration
@@ -443,5 +442,4 @@ class PartnerController extends Controller
         ]);
     }
 }
-
 

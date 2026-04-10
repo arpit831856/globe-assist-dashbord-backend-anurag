@@ -62,10 +62,10 @@
             ><i class="fa fa-headset"></i> Help & Support</a
           >
         </li>
-        <li class="logout-item">
-          <a onclick="openLogoutModal()" style="cursor: pointer"
-            ><i class="fa fa-sign-out-alt"></i> Logout</a
-          >
-        </li>
+       <li class="logout-item">
+    <a href="{{ route('logout') }}">
+        <i class="fa fa-sign-out-alt"></i> Logout
+    </a>
+</li>
       </ul>
     </div>

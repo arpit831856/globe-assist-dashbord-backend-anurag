@@ -44,17 +44,20 @@
         <div class="d-flex align-items-center gap-3 ms-auto">
 
             {{-- PROFILE OFFCANVAS TRIGGER --}}
-            <a href="#" class="text-decoration-none" 
-               data-bs-toggle="offcanvas" data-bs-target="#offcanvasProfile" 
-               aria-controls="offcanvasProfile">
+           <a href="{{ $authUser ? '#' : route('login') }}" class="text-decoration-none" 
+   @if($authUser) data-bs-toggle="offcanvas" data-bs-target="#offcanvasProfile" @endif>
 
-                @if ($authUser)
-                    <img src="{{ $profileImage }}" class="rounded-circle" 
-                         style="height:40px;width:40px;object-fit:cover" alt="Profile">
-                @else
-                    <img src="{{ $profileImage }}" class="green-icon" height="40" alt="Profile">
-                @endif
-            </a>
+    @if ($authUser)
+        {{-- Logged in user ki image --}}
+        <img src="{{ $profileImage }}" class="rounded-circle" 
+             style="height:40px;width:40px;object-fit:cover" alt="User">
+    @else
+        {{-- Login nahi hai to ye icon dikhega --}}
+        <div class="bg-light d-inline-flex align-items-center justify-content-center rounded-circle" style="height:40px;width:40px;">
+            <i class="fas fa-user-circle" style="font-size: 27px;color: rgb(108 186 12) !important;"></i>
+        </div>
+    @endif
+</a>
 
 
             <button class="navbar-toggler d-lg-none border-0 bg-light shadow-none" type="button" 
@@ -177,4 +180,5 @@
   .icon-green {
       color: #148a3a;
   }
+  
 </style>
