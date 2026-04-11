@@ -974,37 +974,34 @@
 
         <button
           class="sb-item active"
-          onclick="loadPage('dash-overview.html', this)"
+          onclick="loadPage('{{ route('user.overview') }}', this)"
           title="Overview"
         >
           <span class="sb-item-icon"><i class="fas fa-home"></i></span>
           <span class="sb-item-label">Overview</span>
         </button>
 
-        <button
-          class="sb-item"
-          onclick="loadPage('dash-services.html', this)"
-          title="Services"
-        >
-          <span class="sb-item-icon"
-            ><i class="fas fa-concierge-bell"></i
-          ></span>
-          <span class="sb-item-label">Services</span>
-        </button>
+       <button
+    class="sb-item"
+    onclick="loadPage('{{ route('user.services') }}', this)"
+    title="Services"
+>
+    <span class="sb-item-icon"><i class="fas fa-concierge-bell"></i></span>
+    <span class="sb-item-label">Services</span>
+</button>
 
         <button
           class="sb-item"
-          onclick="loadPage('dash-notifications.html', this)"
+          onclick="loadPage('{{ route('user.notifications') }}', this)"
           title="Notifications"
         >
           <span class="sb-item-icon"><i class="fas fa-bell"></i></span>
           <span class="sb-item-label">Notifications</span>
           <span class="sb-badge">3</span>
         </button>
-
         <button
           class="sb-item"
-          onclick="loadPage('dash-payment.html', this)"
+          onclick="loadPage('{{ route('user.payments') }}', this)"
           title="Payment"
         >
           <span class="sb-item-icon"><i class="fas fa-credit-card"></i></span>
@@ -1015,7 +1012,7 @@
 
         <button
           class="sb-item"
-          onclick="loadPage('dash-profile.html', this)"
+          onclick="loadPage('{{ route('user.profile') }}', this)"
           title="Profile"
         >
           <span class="sb-item-icon"><i class="fas fa-user-circle"></i></span>
@@ -1024,7 +1021,7 @@
 
         <button
           class="sb-item"
-          onclick="loadPage('dash-password.html', this)"
+          onclick="loadPage('{{ route('user.change-password') }}', this)"
           title="Change Password"
         >
           <span class="sb-item-icon"><i class="fas fa-lock"></i></span>
@@ -1033,7 +1030,7 @@
 
         <button
           class="sb-item"
-          onclick="loadPage('dash-support.html', this)"
+          onclick="loadPage('{{ route('user.support') }}', this)"
           title="Support"
         >
           <span class="sb-item-icon"><i class="fas fa-life-ring"></i></span>
@@ -1066,7 +1063,7 @@
           class="svc-pill active"
           data-filter="all"
           onclick="
-            handlePill(this, 'all');
+            handlePill(this, 'all', '{{ route('user.overview') }}');
             return false;
           "
         >
@@ -1076,10 +1073,8 @@
           href="#"
           class="svc-pill"
           data-filter="telecaller"
-          onclick="
-            handlePill(this, 'telecaller');
-            return false;
-          "
+        
+          onclick="handlePill(this, 'telecaller', '{{ route('user.services') }}'); return false;"
         >
           <i class="fas fa-phone-alt"></i> Telecaller
         </a>
@@ -1346,7 +1341,7 @@
             <div class="pd-body">
               <button
                 class="pd-item"
-                onclick="loadPageFromDropdown('dash-profile.html')"
+                onclick="loadPageFromDropdown('{{ route('user.profile') }}')"
               >
                 <span class="pd-icon g"
                   ><i class="fas fa-user-circle"></i
@@ -1355,7 +1350,7 @@
               </button>
               <button
                 class="pd-item"
-                onclick="loadPageFromDropdown('dash-services.html')"
+                onclick="loadPageFromDropdown('{{ route('user.services') }}')"
               >
                 <span class="pd-icon b"
                   ><i class="fas fa-concierge-bell"></i
@@ -1364,7 +1359,7 @@
               </button>
               <button
                 class="pd-item"
-                onclick="loadPageFromDropdown('dash-payment.html')"
+                onclick="loadPageFromDropdown('{{ route('user.payments') }}')"
               >
                 <span class="pd-icon o"
                   ><i class="fas fa-credit-card"></i
@@ -1373,7 +1368,7 @@
               </button>
               <button
                 class="pd-item"
-                onclick="loadPageFromDropdown('dash-support.html')"
+                onclick="loadPageFromDropdown('{{ route('user.support') }}')"
               >
                 <span class="pd-icon p"><i class="fas fa-headset"></i></span>
                 Support
@@ -1383,7 +1378,7 @@
 
               <button
                 class="pd-item logout"
-                onclick="window.location.href = 'index.html'"
+                onclick="window.location.href = '{{ route('logout') }}'"
               >
                 <span
                   class="pd-icon"
@@ -1401,7 +1396,12 @@
 
     <!-- ─── CONTENT FRAME ─── -->
     <div class="content-area" id="contentArea">
-        @yield('content')
+      <iframe
+        class="content-frame"
+        id="contentFrame"
+        src="{{ route('user.overview') }}"
+        title="Dashboard Content"
+      ></iframe>
     </div>
 
     <!-- Mobile Overlay -->
@@ -1470,36 +1470,19 @@
       }
 
       /* ── SERVICE PILL → FILTER ── */
-      function handlePill(el, filter) {
-        // Set active pill
-        document
-          .querySelectorAll(".svc-pill")
-          .forEach((p) => p.classList.remove("active"));
-        el.classList.add("active");
+     function handlePill(element, filter, url) {
+    // 1. Iframe ka source change karein
+    if(url) {
+        document.getElementById('contentFrame').src = url;
+    }
 
-        // Always go to services page and pass filter via hash
-        const frame = document.getElementById("contentFrame");
+    // 2. Pill ka active class manage karein
+    document.querySelectorAll('.svc-pill').forEach(pill => pill.classList.remove('active'));
+    element.classList.add('active');
 
-        // Set sidebar active to Services
-        const items = document.querySelectorAll(".sb-item");
-        items.forEach((i) => i.classList.remove("active"));
-        if (items[1]) items[1].classList.add("active");
-
-        if (filter === "all") {
-          // Overview
-          frame.src = "dash-overview.html";
-          items.forEach((i) => i.classList.remove("active"));
-          if (items[0]) items[0].classList.add("active");
-        } else {
-          frame.src = "dash-services.html#" + filter;
-          // After load, post message to iframe
-          frame.onload = () => {
-            try {
-              frame.contentWindow.postMessage({ filterType: filter }, "*");
-            } catch (e) {}
-          };
-        }
-      }
+    // 3. Agar aapka koi filtering logic hai toh wo yahan aayega
+    console.log("Filtering for: " + filter);
+}
 
       /* ── PANELS (chat, notif, profile) ── */
       let openPanel = null;

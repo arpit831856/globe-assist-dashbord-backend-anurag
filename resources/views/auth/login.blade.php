@@ -165,14 +165,19 @@
                     @endif --}}
 
                     <!-- Remember -->
-                    <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" name="">
-                        <label class="form-check-label">Remember me</label>
-                    </div>
+                 <div class="mb-3 d-flex justify-content-between align-items-center">
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" name="remember" id="remember">
+        <label class="form-check-label" for="remember">Remember me</label>
+    </div>
+    <a href="{{ route('password.request') }}" class="text-success fw-semibold text-decoration-none">
+        Forgot password?
+    </a>
+</div>
                     <!-- Submit -->
-                    <div class="mb-4">
-                        <button type="submit" class="btn btn-primary btn-login">Log in</button>
-                    </div>
+                  <div class="mb-4 d-grid">
+    <button type="submit" class="btn btn-primary btn-login">Log in</button>
+</div>
                 </form>
                 <p>Don't have an account?
                     <a href="#" id="openRegisterModal" class="text-success fw-semibold text-decoration-none">

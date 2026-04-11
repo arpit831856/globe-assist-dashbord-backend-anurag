@@ -199,14 +199,30 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
+Route::get('forgot-password', [LoginController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('forgot-password', [LoginController::class, 'sendResetLinkEmail'])->name('password.email');
+
+// Reset Password Routes
+Route::get('reset-password/{token}', [LoginController::class, 'showResetForm'])->name('password.reset');
+Route::post('reset-password', [LoginController::class, 'reset'])->name('password.update');
+
 Route::middleware('auth:admin')->group(function () {
     Route::get('/admin/dashboard', [DashboardController::class, 'apiDashboard'])->name('admin.dashboard');
 });
 
+
 Route::middleware('auth:user')->group(function () {
+    Route::get('user/home', [UserDashboardController::class, 'index'])->name('user.home');
+    Route::get('/user/overview', [UserDashboardController::class, 'overview'])->name('user.overview');
+    Route::get('/user/services', [UserDashboardController::class, 'services'])->name('user.services');
+    Route::get('/user/notifications', [UserDashboardController::class, 'notifications'])->name('user.notifications');
+    Route::get('/user/payments', [UserDashboardController::class, 'payments'])->name('user.payments');
+    Route::get('/user/profile', [UserDashboardController::class, 'profile'])->name('user.profile');
+    Route::get('/user/change-password', [UserDashboardController::class, 'changePassword'])->name('user.change-password');
+    Route::get('/user/support', [UserDashboardController::class, 'support'])->name('user.support');
 });
 
-    Route::get('/home', [UserDashboardController::class, 'index'])->name('user.home');
+    
 
 Route::middleware('auth:partner')->group(function () {
     Route::get('/partner/home', [PartnerDashboard::class, 'index'])->name('partner.home');

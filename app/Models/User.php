@@ -29,6 +29,7 @@ class User extends Authenticatable
         'user_id',
         'role',
         'password',
+        'PSR',
     ];
     /**
      * The attributes that are mass assignable.
