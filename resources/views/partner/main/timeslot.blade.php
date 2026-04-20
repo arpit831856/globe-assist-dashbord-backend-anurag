@@ -467,8 +467,13 @@
 <!-- Main Content -->
 <div class="main">
 
-          @include('partner.layouts.header');
-
+<div class="page-header">
+    <div class="page-header-left">
+      <h1><i class="fa fa-calendar-days"></i> Availability & Time Slots</h1>
+      <p>Set your working hours and manage service requests based on your availability</p>
+    </div>
+    <span class="page-header-badge" id="activeCount">6 / 7 Days Active</span>
+  </div>
 
   <!-- Weekly Availability Table -->
   <div class="timeslot-container">
@@ -561,16 +566,16 @@
   </div>
 </div>
 
-<script src="shared.js"></script>
+<script src="{{ asset('js/shared.js') }}"></script>
 <script>
 /* ==================== TIME SLOT DATA ==================== */
 var availabilityData = {
-  'Monday':    { startTime: '09:00', endTime: '18:00', isActive: true },
-  'Tuesday':   { startTime: '09:00', endTime: '18:00', isActive: true },
-  'Wednesday': { startTime: '09:00', endTime: '18:00', isActive: true },
-  'Thursday':  { startTime: '09:00', endTime: '18:00', isActive: true },
-  'Friday':    { startTime: '09:00', endTime: '18:00', isActive: true },
-  'Saturday':  { startTime: '10:00', endTime: '16:00', isActive: true },
+  'Monday':    { startTime: '09:00', endTime: '18:00', isActive: false },
+  'Tuesday':   { startTime: '09:00', endTime: '18:00', isActive: false },
+  'Wednesday': { startTime: '09:00', endTime: '18:00', isActive: false },
+  'Thursday':  { startTime: '09:00', endTime: '18:00', isActive: false },
+  'Friday':    { startTime: '09:00', endTime: '18:00', isActive: false },
+  'Saturday':  { startTime: '10:00', endTime: '16:00', isActive: false },
   'Sunday':    { startTime: '00:00', endTime: '00:00', isActive: false }
 };
 
@@ -663,11 +668,71 @@ function toggleDay(day, btn) {
   renderAvailabilityTable();
   renderServiceRequests();
 }
+function showMessage(message, type = 'success') {
+    let box = document.getElementById('msgBox');
 
+    if (!box) {
+        box = document.createElement('div');
+        box.id = 'msgBox';
+        box.style.position = 'fixed';
+        box.style.top = '20px';
+        box.style.right = '20px';
+        box.style.zIndex = '9999';
+        box.style.padding = '12px 18px';
+        box.style.borderRadius = '8px';
+        box.style.color = '#fff';
+        box.style.fontWeight = 'bold';
+        document.body.appendChild(box);
+    }
+
+    box.innerHTML = message;
+    box.style.background = type === 'success' ? '#28a745' : '#dc3545';
+    box.style.display = 'block';
+
+    setTimeout(() => {
+        box.style.display = 'none';
+    }, 3000);
+}
 function saveAvailability() {
-  var activeDays = Object.keys(availabilityData).filter(function(d) { return availabilityData[d].isActive; });
-  alert('✓ Availability saved successfully!\n\nActive days: ' + activeDays.join(', ') + '\n\nYour schedule is now live.');
-  renderServiceRequests();
+
+    let slots = [];
+
+    Object.keys(availabilityData).forEach(function(day) {
+
+        let slot = availabilityData[day];
+
+        // ✅ Only active rows send karo
+        if (slot.isActive) {
+            slots.push({
+                day: day,
+                start_time: slot.startTime,
+                end_time: slot.endTime,
+                status: 'Free'
+            });
+        }
+    });
+
+    fetch("{{ route('partner.save-slots') }}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+        },
+        body: JSON.stringify({ slots: slots })
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        if (data.success) {
+            showMessage(data.message, 'success');
+        } else {
+            showMessage(data.message, 'error');
+        }
+
+    })
+    .catch(error => {
+        showMessage('Something went wrong!', 'error');
+    });
 }
 
 function resetAvailability() {

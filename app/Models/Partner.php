@@ -30,4 +30,9 @@ class Partner extends Authenticatable
         'previous_work',
         'partner_id'
     ];
+
+    public function partnerServices()
+    {
+        return $this->hasMany(PartnerService::class, 'partner_id');
+    }
 }

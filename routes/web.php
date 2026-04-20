@@ -55,6 +55,8 @@ Route::get('/complaints', function () {
     return view('admin.complaints');
 })->name('web.complaints');
 
+
+
 Route::get('/enquiry', function () {
     return view('admin.enquiry');
 })->name('web.enquiry');
@@ -98,7 +100,9 @@ Route::prefix('admin')->group(function () {
     Route::middleware(['auth:admin'])->group(function () {
 
         // Change Password Routes
-        Route::post('/change-password', [AdminAuthController::class, 'changePassword'])->name('admin.change.password');
+                Route::get('/change-password-form', [AdminAuthController::class, 'changePasswordForm'])->name('admin.change-password-form');
+
+        Route::post('/change-password', [AdminAuthController::class, 'changePassword'])->name('admin.change-password.update');
 
         Route::get('/dashboard', [DashboardController::class, 'apiDashboard'])->name('dashboard');
         // Users API routes
@@ -114,15 +118,26 @@ Route::prefix('admin')->group(function () {
             // return redirect('/admin/login');
         })->name('admin.logout');
 
-        // Route::post('admin/logout', [AdminAuth::class, 'logout'])->name('admin.logout');
+          Route::get('/add-service', [PartnerController::class, 'addService'])->name('admin.add-service');
+          Route::post('/services/store', [PartnerController::class, 'storeService'])->name('admin.services.store');
+                Route::get('/service-list', [PartnerController::class, 'serviceList'])->name('admin.service-list');
+  Route::get('/services/edit/{id}', [PartnerController::class, 'edit'])->name('admin.services.edit');
 
-
+    // update data
+    Route::post('/services/update/{id}', [PartnerController::class, 'updates'])->name('admin.services.update');
+Route::put('/booking/{id}/approve', [PartnerController::class, 'approve'])
+    ->name('admin.booking.approve');
+    // delete data
+    Route::post('/services/delete/{id}', [PartnerController::class, 'delete'])->name('admin.services.delete');
+          Route::get('/bookings', [PartnerController::class, 'bookings'])->name('admin.bookings');
+           Route::get('/get-partners/{id}', [PartnerController::class, 'getPartners']) ->name('admin.getPartners');          Route::post('/admin/booking/save-assign', [PartnerController::class, 'saveAssign'])->name('admin.booking.saveAssign');
         //partner route
         Route::get('/partner', [PartnerController::class, 'index'])->name('partner.index');
         Route::get('/partner/{partner}', [PartnerController::class, 'show']);
         Route::put('/admin/partners/update', [PartnerController::class, 'update'])->name('admin.partner.update');
         Route::delete('/partner/{partner}', [PartnerController::class, 'destroy'])->name('partner.destroy');
-
+        Route::get('/partner/service/list', [PartnerController::class, 'partnerServiceList'])->name('partner.service.list');
+        Route::post('/partner/service/{id}/approve', [PartnerController::class, 'approvePartnerService'])->name('partner.service.approve');
 
         // Manage Admin Routes
         Route::get('/manage-admin', [ManageAdminController::class, 'index'])->name('manage_admin.index');
@@ -219,7 +234,11 @@ Route::middleware('auth:user')->group(function () {
     Route::get('/user/payments', [UserDashboardController::class, 'payments'])->name('user.payments');
     Route::get('/user/profile', [UserDashboardController::class, 'profile'])->name('user.profile');
     Route::get('/user/change-password', [UserDashboardController::class, 'changePassword'])->name('user.change-password');
+    Route::post('/user/change-password', [UserDashboardController::class, 'updatePassword'])->name('user.change-password.update');
     Route::get('/user/support', [UserDashboardController::class, 'support'])->name('user.support');
+
+ Route::post('/user/book-services', [UserDashboardController::class, 'bookService'])->name('user.book-service');
+
 });
 
     
@@ -234,6 +253,12 @@ Route::middleware('auth:partner')->group(function () {
     Route::get('/partner/complaints', [PartnerDashboard::class, 'complaints'])->name('partner.complaints');
     Route::get('/partner/services-history', [PartnerDashboard::class, 'serviceHistory'])->name('partner.serviceHistory');
     Route::get('/partner/payments', [PartnerDashboard::class, 'payments'])->name('partner.payments');
+    Route::get('/partner/change-password', [PartnerDashboard::class, 'changePassword'])->name('partner.change-password');
+    Route::post('/partner/change-password', [PartnerDashboard::class, 'updatePassword'])->name('partner.change-password.update');
     Route::get('/partner/help', [PartnerDashboard::class, 'help'])->name('partner.help');
-
+    Route::post('/partner/save-slots', [PartnerDashboard::class,'saveSlots'])->name('partner.save-slots');
+    Route::post('/partner/profile/save', [PartnerDashboard::class, 'save'])->name('partner.profile.save');
+    Route::get('/partner/profile/get', [PartnerDashboard::class, 'getProfile'])->name('partner.profile.get');
+    Route::post('/partner/services/save', [PartnerDashboard::class, 'saveService'])->name('partner.services.save');
+    Route::get('/partner/services/get', [PartnerDashboard::class, 'getServices'])->name('partner.services.get');
 });

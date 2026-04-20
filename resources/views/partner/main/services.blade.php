@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+       <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>GlobeAssist — My Services</title>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -870,6 +872,66 @@
         }
       }
     </style>
+   <style>
+#toastContainer{
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 99999;
+}
+
+.toast{
+    min-width: 320px;
+    max-width: 420px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.18);
+    animation: slideIn .4s ease;
+    font-size: 14px;
+    border-left: 4px solid rgba(255,255,255,.25);
+}
+
+/* Success Blue */
+.toast.success{
+    background: linear-gradient(135deg,#0f172a,#1d4ed8);
+}
+
+/* Error = Red */
+.toast.error{
+    background: linear-gradient(135deg,#991b1b,#ef4444);
+}
+
+.toast i{
+    font-size:18px;
+}
+
+.toast .close-btn{
+    margin-left:auto;
+    cursor:pointer;
+    font-size:18px;
+    opacity:.8;
+}
+
+.toast .close-btn:hover{
+    opacity:1;
+}
+
+@keyframes slideIn{
+    from{
+        opacity:0;
+        transform:translateX(100%);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+</style>
   </head>
   <body>
     <div
@@ -899,7 +961,12 @@
 
 
     <div class="main">
-            @include('partner.layouts.header');
+<div class="page-header">
+        <div class="page-header-left">
+          <h1><i class="fa-solid fa-briefcase"></i> My Services</h1>
+          <p>Manage and showcase your professional services</p>
+        </div>
+      </div>
 
 
       <!-- Setup Screen -->
@@ -1059,101 +1126,103 @@
 
     <!-- PROFILE MODAL -->
     <div class="modal-bg" id="profileModal">
+     <!-- Global Alert Message -->
+<div class="page-alert-wrapper">
+
+    @if(session('success'))
+        <div class="page-alert success-alert" id="flashMessage">
+            <i class="fas fa-check-circle"></i>
+            <span>{{ session('success') }}</span>
+            <button onclick="closeFlashMessage()">×</button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="page-alert error-alert" id="flashMessage">
+            <i class="fas fa-times-circle"></i>
+            <span>{{ session('error') }}</span>
+            <button onclick="closeFlashMessage()">×</button>
+        </div>
+    @endif
+
+</div>
       <div class="modal-box md">
         <div class="modal-hdr">
           <h3>Partner Profile</h3>
           <button class="modal-close" onclick="closeProfileModal()">×</button>
         </div>
         <div class="modal-body">
-          <form id="profileForm" onsubmit="saveProfile(event)">
-            <div class="f-field">
+<form id="profileForm" enctype="multipart/form-data">
+
+@csrf            <div class="f-field">
               <label>Partner / Business Name</label
-              ><input
-                type="text"
-                id="pName"
-                placeholder="e.g. Rohit Chaudhary - Global Support"
-                required
-              />
+              ><input type="text" name="business_name"  placeholder="Enter business name" id="pName"/>
+
             </div>
             <div class="f-field">
               <label>Bio / Tagline</label
-              ><textarea
-                id="pBio"
-                rows="2"
-                placeholder="Short description of your expertise..."
-                required
-              ></textarea>
+              ><textarea name="bio" id="pBio"></textarea>
+
             </div>
             <div class="f-row">
               <div class="f-field">
                 <label>Years of Experience</label
-                ><input type="text" id="pExp" placeholder="e.g. 5+ Years" />
+                ><input type="text"  placeholder="Enter years of experience" name="experience" id="pExp">
+
               </div>
               <div class="f-field">
                 <label>Projects Completed</label
-                ><input type="text" id="pProjects" placeholder="e.g. 124" />
+                ><input type="text"  placeholder="Enter number of projects completed" name="projects_completed" id="pProjects">
+
               </div>
             </div>
             <div class="f-row">
               <div class="f-field">
                 <label>Service Areas</label
-                ><input type="text" id="pAreas" placeholder="Delhi, Noida..." />
+                ><input type="text"  placeholder="Enter service areas" name="service_areas" id="pAreas">
+
               </div>
               <div class="f-field">
                 <label>Languages</label
-                ><input type="text" id="pLangs" placeholder="Hindi, English" />
+                ><input type="text"  placeholder="Enter languages" name="languages" id="pLangs">
+
               </div>
             </div>
             <div class="f-row">
               <div class="f-field">
                 <label>Phone Number</label
-                ><input type="text" id="pPhone" placeholder="+91 9320583983" />
+                ><input type="text"  placeholder="Enter phone number" name="phone" id="pPhone">
+
               </div>
               <div class="f-field">
                 <label>Email Address</label
-                ><input
-                  type="email"
-                  id="pEmail"
-                  placeholder="rohit@gmail.com"
-                />
+                ><input type="email"  placeholder="Enter email address" name="email" id="pEmail">
+
               </div>
             </div>
             <div class="f-row">
               <div class="f-field">
                 <label>Rating (out of 5)</label
-                ><input
-                  type="number"
-                  id="pRating"
-                  placeholder="4.8"
-                  min="1"
-                  max="5"
-                  step="0.1"
-                />
+                ><input type="number"  placeholder="Enter rating" name="rating" id="pRating">
+
               </div>
               <div class="f-field">
                 <label>No. of Reviews</label
-                ><input type="text" id="pReviews" placeholder="218" />
+                ><input type="text"  placeholder="Enter number of reviews" name="reviews_count" id="pReviews">
+
               </div>
             </div>
             <div class="f-field">
               <label>Skill Tags (comma separated)</label
-              ><input
-                type="text"
-                id="pTags"
-                placeholder="Tour Manager, Ground Staff, Telecaller..."
-              />
+              ><input type="text"  placeholder="Enter skill tags" name="skill_tags" id="pTags">
+
             </div>
             <div class="f-divider"></div>
             <div class="f-field">
               <label>Profile Photo</label>
               <div class="upload-zone">
                 <i class="fa fa-camera"></i>Click to upload your profile
-                photo<input
-                  type="file"
-                  id="pAvatarInput"
-                  accept="image/*"
-                  onchange="previewAvatar(event)"
-                />
+                photo<input type="file" name="profile_photo" id="pAvatarInput">
               </div>
               <img
                 id="pAvatarPreview"
@@ -1190,26 +1259,20 @@
             <div class="f-row">
               <div class="f-field">
                 <label>Category</label>
-                <select id="sCat" required>
-                  <option value="">Select Category</option>
-                  <option>Tour Manager</option>
-                  <option>Ground Staff</option>
-                  <option>Event Coordinator</option>
-                  <option>Telecaller</option>
-                  <option>Travel Support</option>
-                  <option>Photography</option>
-                  <option>Security Staff</option>
-                  <option>Hospitality</option>
-                  <option>Other</option>
-                </select>
+             <select id="sCat" required>
+    <option value="">Select Category</option>
+    @foreach($categories as $category)
+        <option value="{{ $category->id }}">{{ $category->name }}</option>
+    @endforeach
+</select>
               </div>
-              <div class="f-field">
+              {{-- <div class="f-field">
                 <label>Status</label>
                 <select id="sStat">
                   <option value="active">Active</option>
                   <option value="pending">Pending</option>
                 </select>
-              </div>
+              </div> --}}
             </div>
             <div class="f-field">
               <label>Service Title</label
@@ -1251,6 +1314,22 @@
                 </select>
               </div>
             </div>
+            <div class="f-row">
+    <div class="f-field">
+        <label>Service Date</label>
+        <input type="date" id="sDate" required />
+    </div>
+
+    <div class="f-field">
+        <label>Start Time</label>
+        <input type="time" id="sStartTime" required />
+    </div>
+
+    <div class="f-field">
+        <label>End Time</label>
+        <input type="time" id="sEndTime" required />
+    </div>
+</div>
             <div class="f-row">
               <div class="f-field">
                 <label>Service Location / Area</label
@@ -1336,7 +1415,7 @@
       <div id="lightboxCaption"></div>
     </div>
 
-    <script src="shared.js"></script>
+<script src="{{ asset('js/shared.js') }}"></script>
     <script>
       function openProfileModal() {
         document.getElementById("profileModal").classList.add("open");
@@ -1417,35 +1496,27 @@
         document.getElementById("pc-reviews").textContent = d.reviews
           ? d.reviews + " reviews"
           : "-";
-        var metaData = [
-          { icon: "fa-calendar-alt", label: "Experience", val: d.exp || "-" },
-          {
-            icon: "fa-map-marker-alt",
-            label: "Service Areas",
-            val: d.areas || "-",
-          },
-          { icon: "fa-language", label: "Languages", val: d.langs || "-" },
-          {
-            icon: "fa-project-diagram",
-            label: "Projects",
-            val: d.projects || "-",
-          },
-          { icon: "fa-phone", label: "Contact", val: d.phone || "-" },
-          { icon: "fa-envelope", label: "Email", val: d.email || "-" },
-        ];
-        document.getElementById("pc-meta").innerHTML = metaData
-          .map(function (m) {
-            return (
-              '<div class="sv-meta-col"><i class="fa ' +
-              m.icon +
-              '"></i><div><div class="sv-meta-lbl">' +
-              m.label +
-              '</div><div class="sv-meta-val">' +
-              m.val +
-              "</div></div></div>"
-            );
-          })
-          .join("");
+      var metaData = [
+  { icon: "fa-calendar-days", label: "Experience", val: d.exp || "-" },
+  { icon: "fa-location-dot", label: "Service Areas", val: d.areas || "-" },
+  { icon: "fa-language", label: "Languages", val: d.langs || "-" },
+  { icon: "fa-diagram-project", label: "Projects", val: d.projects || "-" },
+  { icon: "fa-phone", label: "Contact", val: d.phone || "-" },
+  { icon: "fa-envelope", label: "Email", val: d.email || "-" },
+];
+       document.getElementById("pc-meta").innerHTML = metaData
+  .map(function (m) {
+    return `
+      <div class="sv-meta-col">
+        <i class="fa-solid ${m.icon}"></i>
+        <div>
+          <div class="sv-meta-lbl">${m.label}</div>
+          <div class="sv-meta-val">${m.val}</div>
+        </div>
+      </div>
+    `;
+  })
+  .join("");
       }
 
       var galleryData = [];
@@ -1547,6 +1618,9 @@
 
       function saveService(e) {
         e.preventDefault();
+        var serviceDate = document.getElementById("sDate").value;
+var startTime  = document.getElementById("sStartTime").value;
+var endTime    = document.getElementById("sEndTime").value;
         var cat = document.getElementById("sCat").value,
           stat = document.getElementById("sStat").value;
         var title = document.getElementById("sTitle").value,
@@ -1703,5 +1777,346 @@
         }
       }
     </script>
+<script>
+function escapeHtml(value) {
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function renderServiceRow(service) {
+    var empty = document.getElementById("svcEmpty");
+    if (empty) empty.remove();
+
+    var imgURLs = Array.isArray(service.photos) ? service.photos : [];
+    var coverSrc = imgURLs[0] || null;
+    var stat = service.status || "pending";
+    var statLabel = stat.charAt(0).toUpperCase() + stat.slice(1);
+    var statColor = stat === "active" ? "var(--success)" : "var(--warning)";
+    var title = service.title || "-";
+    var desc = service.description || "-";
+    var category = service.category || "-";
+    var price = service.price || "-";
+    var hlArr = (service.highlights || "")
+        .split(",")
+        .map(function (h) {
+            return h.trim();
+        })
+        .filter(Boolean);
+
+    var pillDefs = [
+        { icon: "fa-map-marker-alt", label: "Location", val: service.location || "" },
+        { icon: "fa-calendar-check", label: "Availability", val: service.availability || "" },
+        {
+            icon: "fa-briefcase",
+            label: "Experience",
+            val: service.experience_years ? service.experience_years + " Years" : "",
+        },
+        { icon: "fa-users", label: "Team Size", val: service.team_size || "" },
+        { icon: "fa-language", label: "Languages", val: service.languages || "" },
+    ].filter(function (p) {
+        return p.val;
+    });
+
+    var pillsHTML = pillDefs
+        .map(function (p) {
+            return '<div class="sv-row-pill"><div class="sv-row-pill-icon"><i class="fa ' + p.icon + '"></i></div><div><div class="sv-row-pill-lbl">' + escapeHtml(p.label) + '</div><div class="sv-row-pill-val">' + escapeHtml(p.val) + "</div></div></div>";
+        })
+        .join("");
+
+    var hlHTML = hlArr.length
+        ? '<div class="sv-row-highlights">' + hlArr.map(function (h) {
+            return '<span class="sv-hl">* ' + escapeHtml(h) + "</span>";
+        }).join("") + "</div>"
+        : "";
+
+    var imgBlock = coverSrc
+        ? '<img src="' + escapeHtml(coverSrc) + '" alt="' + escapeHtml(title) + '"><div class="sv-row-img-grad"></div><div class="sv-row-img-hover"><i class="fa fa-expand-alt"></i><span>View Photo</span></div><div class="sv-row-badges"><span class="sv-row-cat">' + escapeHtml(category) + '</span><span class="sv-row-status ' + escapeHtml(stat) + '">' + escapeHtml(statLabel) + "</span></div>" + (imgURLs.length > 1 ? '<div class="sv-row-img-count"><i class="fa fa-images"></i> ' + imgURLs.length + " photos</div>" : "")
+        : '<i class="fa fa-tools no-img-icon"></i><div class="sv-row-badges"><span class="sv-row-cat">' + escapeHtml(category) + '</span><span class="sv-row-status ' + escapeHtml(stat) + '">' + escapeHtml(statLabel) + "</span></div>";
+
+    var thumbsHTML = imgURLs.length > 0
+        ? '<div class="sv-row-thumbs"><span class="sv-row-thumb-label"><i class="fa fa-images" style="margin-right:5px;"></i>Photos</span><div class="sv-row-thumbs-list">' + imgURLs.map(function (src, i) {
+            return '<img class="sv-row-thumb" src="' + escapeHtml(src) + '" onclick="openLightbox(\'' + escapeHtml(src) + "','" + escapeHtml(title + " - Photo " + (i + 1)) + "')\">";
+        }).join("") + "</div></div>"
+        : "";
+
+    var row = document.createElement("div");
+    row.className = "sv-service-row";
+    row.dataset.serviceId = service.id || "";
+    row.innerHTML = '<div class="sv-row-main"><div class="sv-row-imgblock" onclick="openLightbox(\'' + escapeHtml(coverSrc || "") + "','" + escapeHtml(title) + "')\">" + imgBlock + '</div><div class="sv-row-info"><div class="sv-row-info-body"><div class="sv-row-title-row"><h3>' + escapeHtml(title) + '</h3><button class="sv-row-del-btn" type="button" onclick="deleteService(this)"><i class="fa fa-trash"></i></button></div><p class="sv-row-desc">' + escapeHtml(desc) + '</p><div class="sv-row-pills">' + pillsHTML + "</div>" + hlHTML + '</div><div class="sv-row-info-footer"><div><div style="display:flex;align-items:baseline;gap:5px;"><div class="sv-row-price">' + escapeHtml(price) + '</div><div class="sv-row-price-unit">/ service</div></div><div class="sv-row-price-note">Negotiable based on project scope</div></div><div style="text-align:right;"><div style="font-size:10px;color:var(--gray-400);text-transform:uppercase;letter-spacing:.8px;font-weight:700;margin-bottom:3px;font-family:var(--font-display);">Status</div><div style="font-size:14px;font-weight:800;color:' + statColor + ';font-family:var(--font-display);">● ' + escapeHtml(statLabel) + "</div></div></div></div></div>" + thumbsHTML;
+
+    document.getElementById("servicesContainer").appendChild(row);
+}
+
+function resetServiceForm() {
+    document.getElementById("serviceForm").reset();
+    document.getElementById("sImgPrev").innerHTML = "";
+    svcImages = [];
+}
+
+function loadServices() {
+    fetch("{{ route('partner.services.get') }}")
+    .then(function (res) {
+        return res.json();
+    })
+    .then(function (services) {
+        var container = document.getElementById("servicesContainer");
+        container.innerHTML = "";
+
+        if (!services || services.length === 0) {
+            container.innerHTML = '<div class="sv-empty" id="svcEmpty"><i class="fa fa-inbox"></i><h4>No services added yet</h4><p>Click "Add Service" above to get started</p></div>';
+            return;
+        }
+
+        services.forEach(function (service) {
+            renderServiceRow(service);
+        });
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+}
+
+function saveService(e) {
+    e.preventDefault();
+
+    var formData = new FormData();
+
+    var serviceSelect = document.getElementById("sCat");
+    var serviceId = serviceSelect.value;
+    var categoryName = serviceSelect.options[serviceSelect.selectedIndex].text;
+
+      var serviceDate = document.getElementById("sDate").value;
+    var startTime   = document.getElementById("sStartTime").value;
+    var endTime     = document.getElementById("sEndTime").value;
+    // Category Required
+    if (!serviceId) {
+        showToast("Please select a category", "error");
+        return;
+    }
+formData.append("service_date", serviceDate);
+formData.append("start_time", startTime);
+formData.append("end_time", endTime);
+    formData.append("service_id", serviceId);
+    formData.append("category", categoryName);
+    formData.append("title", document.getElementById("sTitle").value);
+    formData.append("description", document.getElementById("sDesc").value);
+    formData.append("price", document.getElementById("sPrice").value);
+    formData.append("availability", document.getElementById("sAvail").value);
+    formData.append("location", document.getElementById("sLoc").value);
+    formData.append("experience_years", document.getElementById("sExp").value);
+    formData.append("team_size", document.getElementById("sTeam").value);
+    formData.append("languages", document.getElementById("sLang").value);
+    formData.append("highlights", document.getElementById("sHL").value);
+
+    svcImages.forEach(function(file){
+        formData.append("photos[]", file);
+    });
+
+    fetch("{{ route('partner.services.save') }}", {
+        method: "POST",
+        body: formData,
+        headers: {
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+            "Accept": "application/json"
+        }
+    })
+    .then(function(res){
+        return res.json();
+    })
+    .then(function(data){
+
+        if (!data.status) {
+            showToast(data.message || "Service save failed", "error");
+            return;
+        }
+
+        renderServiceRow(data.service);
+        closeServiceModal();
+        resetServiceForm();
+
+        showToast(data.message || "Service saved successfully", "success");
+    })
+    .catch(function(error){
+        console.log(error);
+        showToast("Something went wrong while saving service.", "error");
+    });
+}
+
+function deleteService(btn) {
+    alert("Delete service backend abhi connect nahi hai.");
+}
+</script>
+<script>
+function renderProfileMeta(data) {
+    const metaData = [
+        { icon: "fa-calendar-days", label: "Experience", value: data.experience ?? "-" },
+        { icon: "fa-diagram-project", label: "Projects", value: data.projects_completed ?? "-" },
+        { icon: "fa-location-dot", label: "Areas", value: data.service_areas ?? "-" },
+        { icon: "fa-language", label: "Languages", value: data.languages ?? "-" },
+        { icon: "fa-phone", label: "Phone", value: data.phone ?? "-" },
+        { icon: "fa-envelope", label: "Email", value: data.email ?? "-" },
+    ];
+
+    document.getElementById("pc-meta").innerHTML = metaData
+        .map(function (item) {
+            return `
+                <div class="sv-meta-col">
+                    <i class="fa-solid ${item.icon}"></i>
+                    <div>
+                        <div class="sv-meta-lbl">${item.label}</div>
+                        <div class="sv-meta-val">${item.value}</div>
+                    </div>
+                </div>
+            `;
+        })
+        .join("");
+}
+
+function renderProfileData(data) {
+    if (!data || Object.keys(data).length === 0) {
+        document.getElementById("svSetup").style.display = "block";
+        document.getElementById("svDashboard").style.display = "none";
+        return;
+    }
+
+    document.getElementById("svSetup").style.display = "none";
+    document.getElementById("svDashboard").style.display = "block";
+
+    document.getElementById("pc-name").innerText = data.business_name ?? "-";
+    document.getElementById("pc-bio").innerText = data.bio ?? "-";
+    document.getElementById("pc-rating").innerText = data.rating ?? "-";
+    document.getElementById("pc-reviews").innerText = (data.reviews_count ?? 0) + " Reviews";
+
+    let tagsHtml = "";
+    if (data.skill_tags) {
+        data.skill_tags.split(",").forEach(function (tag) {
+            tagsHtml += `<span class="sv-tag">${tag.trim()}</span>`;
+        });
+    }
+    document.getElementById("pc-tags").innerHTML = tagsHtml;
+
+    renderProfileMeta(data);
+
+    if (data.profile_photo) {
+        document.getElementById("pc-av-ph").style.display = "none";
+        let img = document.getElementById("pc-av-img");
+        img.style.display = "block";
+        img.src = "/storage/" + data.profile_photo;
+    } else {
+        document.getElementById("pc-av-ph").style.display = "flex";
+        document.getElementById("pc-av-img").style.display = "none";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    loadProfile();
+});
+</script>
+
+<script>
+document.getElementById("profileForm").addEventListener("submit", saveProfile);
+
+function saveProfile(e) {
+    e.preventDefault();
+
+    let form = document.getElementById("profileForm");
+    let formData = new FormData(form);
+
+    fetch("{{ route('partner.profile.save') }}", {
+        method: "POST",
+        body: formData,
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        if(data.status == true){
+
+            document.getElementById("svSetup").style.display = "none";
+            document.getElementById("svDashboard").style.display = "block";
+
+            closeProfileModal();
+            loadProfile();
+
+            showToast(data.message, 'success');
+
+        } else {
+            showToast(data.message || "Save Failed", 'error');
+        }
+
+    })
+    .catch(error => {
+        console.log(error);
+        showToast("Something went wrong", 'error');
+    });
+}
+</script>
+
+<script>
+function loadProfile(){
+
+    fetch("{{ route('partner.profile.get') }}")
+    .then(res => res.json())
+    .then(data => {
+        renderProfileData(data);
+    })
+    .catch(error => {
+        console.log(error);
+    });
+}
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    loadServices();
+});
+</script>
+<script>
+function closeFlashMessage(){
+    let msg = document.getElementById('flashMessage');
+    if(msg){
+        msg.style.display = 'none';
+    }
+}
+
+setTimeout(() => {
+    closeFlashMessage();
+}, 5000);
+</script>
+<script>
+function showToast(message, type = 'success') {
+
+    let container = document.getElementById("toastContainer");
+
+    let toast = document.createElement("div");
+    toast.classList.add("toast", type);
+
+    let icon = type === 'success'
+        ? '<i class="fa fa-check-circle"></i>'
+        : '<i class="fa fa-times-circle"></i>';
+
+    toast.innerHTML = `
+        ${icon}
+        <span>${message}</span>
+        <span class="close-btn">&times;</span>
+    `;
+
+    container.appendChild(toast);
+
+    toast.querySelector(".close-btn").onclick = function(){
+        toast.remove();
+    }
+
+    setTimeout(() => {
+        toast.remove();
+    }, 4000);
+}
+</script>
+<div id="toastContainer"></div>
   </body>
 </html>

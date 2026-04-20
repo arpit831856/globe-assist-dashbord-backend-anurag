@@ -63,11 +63,13 @@
       </a>
     </li>
 
-    <li class="nav-item">
-      <a class="nav-link {{ request()->is('admin/complaints*') ? 'active' : '' }}" href="{{ route('web.complaints') }}">
-        <i class="fa-solid fa-anchor-circle-exclamation"></i> Complaints
+     <li class="nav-item">
+      <a class="nav-link {{ request()->is('admin/add-links*') ? 'active' : '' }}"
+        href="{{ route('add_links.index') }}">
+        <i class="fas fa-link"></i> Add Link
       </a>
     </li>
+    
 
     <li class="nav-item">
       <a class="nav-link {{ request()->is('admin/enquiry*') ? 'active' : '' }}" href="{{ route('web.enquiry') }}">
@@ -75,12 +77,29 @@
       </a>
     </li>
 
-    <li class="nav-item">
-      <a class="nav-link" href="#" data-action="change-password">
-        <i class="fas fa-key"></i>
-        <span>Change Password</span>
+    
+   
+<li class="nav-item">
+      <a class="nav-link {{ request()->is('admin/service-list*') ? 'active' : '' }}" href="{{ route('admin.service-list') }}">
+        <i class="fa-solid fa-anchor-circle-exclamation"></i> Service List
       </a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link {{ request()->is('admin/partner-service-list*') ? 'active' : '' }}" href="{{ route('partner.service.list') }}">
+        <i class="fa-solid fa-anchor-circle-exclamation"></i> PartnerService List
+      </a>
+    </li>
+<li class="nav-item">
+      <a class="nav-link {{ request()->is('admin/booking-list*') ? 'active' : '' }}" href="{{ route('admin.bookings') }}">
+        <i class="fa-solid fa-anchor-circle-exclamation"></i> Booking List
+      </a>
+    </li>
+{{-- <li class="nav-item">
+  <a class="nav-link {{ request()->is('admin/services-list*') ? 'active' : '' }}" href="{{ route('admin.services.index') }}">
+    <i class="fas fa-list"></i>
+    <span>Manage Services</span>
+  </a>
+</li> --}}
 
     <li class="nav-item">
       <a class="nav-link {{ request()->is('admin/notifications*') ? 'active' : '' }}"
@@ -102,10 +121,11 @@
       </a>
     </li>
 
+   
     <li class="nav-item">
-      <a class="nav-link {{ request()->is('admin/add-links*') ? 'active' : '' }}"
-        href="{{ route('add_links.index') }}">
-        <i class="fas fa-link"></i> Add Link
+      <a class="nav-link" {{ request()->is('admin/enquiry*') ? 'active' : '' }}" href="{{ route('admin.change-password-form') }}">
+        <i class="fas fa-key"></i>
+        <span>Change Password</span>
       </a>
     </li>
 

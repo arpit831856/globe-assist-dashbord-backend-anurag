@@ -71,19 +71,23 @@ class LoginController extends Controller
         ])->withInput($request->only('email'));
     }
 
-    public function logout(Request $request)
-    {
-        foreach (['admin', 'user', 'partner'] as $guard) {
-            if (Auth::guard($guard)->check()) {
-                Auth::guard($guard)->logout();
-            }
-        }
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect('/login')->with('success', 'Logged out successfully');
+   public function logout(Request $request)
+{
+    if (Auth::guard('admin')->check()) {
+        Auth::guard('admin')->logout();
+    } 
+    elseif (Auth::guard('user')->check()) {
+        Auth::guard('user')->logout();
+    } 
+    elseif (Auth::guard('partner')->check()) {
+        Auth::guard('partner')->logout();
     }
+
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect('/login')->with('success', 'Logged out successfully');
+}
 
 
     public function showLinkRequestForm()

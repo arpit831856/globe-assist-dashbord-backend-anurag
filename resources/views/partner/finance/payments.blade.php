@@ -460,8 +460,12 @@
 
 
     <div class="main">
-               @include('partner.layouts.header');
-
+ <div class="page-header">
+        <div class="page-header-left">
+          <h1><i class="fa fa-wallet"></i> Payment Status</h1>
+          <p>Track your earnings, wallet balance, and payment history</p>
+        </div>
+      </div>
       <div class="payment-container">
         <div class="payment-card">
           <div class="payment-header">

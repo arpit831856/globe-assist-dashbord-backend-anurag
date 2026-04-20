@@ -959,16 +959,47 @@
       .mob-overlay.active {
         display: block;
       }
+  .sidebar-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 0;
+    text-align: center;
+}
+
+.sidebar-logo img {
+    width: 110px;
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 8px;
+}
+
+/* .header-services {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+
+.svc-pill {
+    padding: 10px 20px;
+    border-radius: 30px;
+    background: #007bff;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
     </style>
   </head>
   <body>
     <!-- ─── SIDEBAR ─── -->
     <aside class="sidebar" id="sidebar">
-      <div class="sb-logo">
-        <div class="sb-logo-icon"><i class="fas fa-globe"></i></div>
-        <span class="sb-logo-text">Globe Assist</span>
-      </div>
-
+     <div class="sidebar-header">
+    <div class="sidebar-logo">
+        <img src="{{ asset('assets/globe assist logo.png') }}" alt="Globe Assist Logo">
+    </div>
+</div>
+      
       <nav class="sb-nav">
         <div class="sb-section-label">Main</div>
 
@@ -1058,71 +1089,10 @@
 
       <!-- Service Pills -->
       <div class="header-services">
-        <a
-          href="#"
-          class="svc-pill active"
-          data-filter="all"
-          onclick="
-            handlePill(this, 'all', '{{ route('user.overview') }}');
-            return false;
-          "
-        >
-          <i class="fas fa-th-large"></i> All Services
-        </a>
-        <a
-          href="#"
-          class="svc-pill"
-          data-filter="telecaller"
-        
-          onclick="handlePill(this, 'telecaller', '{{ route('user.services') }}'); return false;"
-        >
-          <i class="fas fa-phone-alt"></i> Telecaller
-        </a>
-        <a
-          href="#"
-          class="svc-pill"
-          data-filter="tour-manager"
-          onclick="
-            handlePill(this, 'tour-manager');
-            return false;
-          "
-        >
-          <i class="fas fa-map-marked-alt"></i> Tour Manager
-        </a>
-        <a
-          href="#"
-          class="svc-pill"
-          data-filter="ground-operator"
-          onclick="
-            handlePill(this, 'ground-operator');
-            return false;
-          "
-        >
-          <i class="fas fa-hard-hat"></i> Ground Operator
-        </a>
-        <a
-          href="#"
-          class="svc-pill"
-          data-filter="content-creator"
-          onclick="
-            handlePill(this, 'content-creator');
-            return false;
-          "
-        >
-          <i class="fas fa-camera"></i> Content Creator
-        </a>
-        <a
-          href="#"
-          class="svc-pill"
-          data-filter="visa"
-          onclick="
-            handlePill(this, 'visa');
-            return false;
-          "
-        >
-          <i class="fas fa-passport"></i> Visa Assistance
-        </a>
-      </div>
+    <a href="#" class="svc-pill active">
+        <i class="fas fa-tachometer-alt"></i> Dashboard Overview
+    </a>
+</div>
 
       <!-- Right Controls -->
       <div class="header-right">

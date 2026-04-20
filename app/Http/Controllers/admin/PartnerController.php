@@ -6,14 +6,219 @@ use Illuminate\Support\Facades\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Partner;
+use App\Models\Booking;
+use App\Models\PartnerSlot;
+use Illuminate\Support\Facades\Auth;
+use App\Models\PartnerService;
+
+use App\Models\Service;
+use Illuminate\Support\Str;
 use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Validation\Rule;
-
+use Illuminate\Support\Facades\Validator;
 
 class PartnerController extends Controller
 {
 
+ public function addService()
+    {
+        return view('admin.add-services');
+    }
+
+   // Controller
+
+public function getPartners($id)
+{
+    $booking = Booking::findOrFail($id);
+
+    $dayName = Carbon::parse($booking->booking_date)->format('l');
+
+    $partners = PartnerSlot::with('partner')
+        ->where('day', $dayName)
+        ->whereRaw('LOWER(TRIM(location)) = ?', [
+            strtolower(trim($booking->location))
+        ])
+        ->where('status', 'Free')
+        ->get();
+
+    return response()->json($partners);
+}
+public function serviceList(Request $request)
+{
+    $query = Service::query();
+
+    // Search
+    if ($request->search) {
+        $query->where(function ($q) use ($request) {
+            $q->where('name', 'like', '%' . $request->search . '%')
+              ->orWhere('base_price', $request->search)
+              ->orWhere('short_description', 'like', '%' . $request->search . '%')
+                            ->orWhere('status', 'like', '%' . $request->search . '%');
+
+        });
+    }
+
+    // Date Filter
+    if ($request->from_date) {
+        $query->whereDate('created_at', '>=', $request->from_date);
+    }
+
+    if ($request->to_date) {
+        $query->whereDate('created_at', '<=', $request->to_date);
+    }
+
+    // Category Filter
+  
+
+    // Status Filter
+    if ($request->status != '') {
+        $query->where('status', $request->status);
+    }
+
+    $services = $query->latest()->paginate(10)->appends($request->all());
+
+    return view('admin.service-list', compact('services'));
+}
+    // Controller Method
+
+
+   public function storeService(Request $request)
+{
+    try {
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            // 'category' => 'nullable|string|max:100',
+            'base_price' => 'nullable|numeric',
+            // 'location_coverage' => 'nullable|string|max:255',
+            'status' => 'required|in:0,1',
+            'short_description' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $imageName = null;
+
+        if ($request->hasFile('image')) {
+
+            if (!file_exists(public_path('uploads/services'))) {
+                mkdir(public_path('uploads/services'), 0777, true);
+            }
+
+            $imageName = time().'_'.Str::slug($request->name).'.'.$request->image->extension();
+            $request->image->move(public_path('uploads/services'), $imageName);
+        }
+
+        Service::create([
+            'name' => $request->name,
+            // 'category' => $request->category,
+            'price_type' => $request->price_type,
+            'base_price' => $request->base_price,
+            // 'icon' => $request->icon,
+            // 'image' => $imageName,
+            // 'location_coverage' => $request->location_coverage,
+            'status' => $request->status,
+            // 'featured' => $request->featured,
+            'short_description' => $request->short_description,
+            // 'description' => $request->description,
+        ]);
+
+        return redirect()->route('admin.service-list')->with('success', 'Service added successfully.');
+
+    } catch (\Exception $e) {
+
+        return redirect()->back()->withInput()->with('error', $e->getMessage());
+    }
+}
+
+ public function edit($id)
+    {
+        $service = Service::findOrFail($id);
+        return view('admin.service-edit', compact('service'));
+    }
+
+    // update data
+    public function updates(Request $request, $id)
+    {
+        $service = Service::findOrFail($id);
+
+        $service->update([
+            'name' => $request->name,
+            'base_price' => $request->base_price,
+            'short_description' => $request->short_description,
+            'status' => $request->status,
+        ]);
+
+        return redirect()->route('admin.service-list')
+            ->with('success','Service updated successfully.');
+    }
+
+    // delete data
+    public function delete($id)
+    {
+        $service = Service::findOrFail($id);
+        $service->delete();
+
+        return redirect()->route('admin.service-list')
+            ->with('success','Service deleted successfully.');
+    }
+
+public function bookings(Request $request)
+{
+    $query = Booking::with('service', 'user');
+
+    // Search by Booking ID / Service Name / User Name
+    if ($request->filled('search')) {
+        $search = $request->search;
+
+        $query->where(function ($q) use ($search) {
+            $q->where('id', 'like', "%{$search}%")
+              ->orWhere('name', 'like', "%{$search}%")
+              ->orWhereHas('service', function ($sub) use ($search) {
+                    $sub->where('name', 'like', "%{$search}%");
+              });
+        });
+    }
+
+    // From Date
+    if ($request->filled('from_date')) {
+        $query->whereDate('booking_date', '>=', $request->from_date);
+    }
+
+    // To Date
+    if ($request->filled('to_date')) {
+        $query->whereDate('booking_date', '<=', $request->to_date);
+    }
+
+    // Status Filter
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    $bookings = $query->latest()->paginate(10)->appends($request->all());
+
+    return view('admin.booking-list', compact('bookings'));
+}
+
+
+public function approve($id)
+{
+    $booking = Booking::find($id);
+
+    if($booking){
+        $booking->status = 'Active';
+        $booking->save();
+
+        return redirect()->back()->with('success', 'Booking Approved Successfully');
+    }else{
+        return redirect()->back()->with('error', 'Booking Not Found');
+    }
+}
     public function index(Request $request)
     {
         $query = Partner::query();
@@ -72,6 +277,74 @@ class PartnerController extends Controller
         $inactivePartners = Partner::where('status', 'inactive')->count();
 
         return view('admin.partner', compact('partners', 'totalPartners', 'activePartners', 'inactivePartners'));
+    }
+
+    public function partnerServiceList(Request $request)
+    {
+        $query = PartnerService::query();
+
+        // 🔍 Search
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('category', 'like', "%$search%")
+                    ->orWhere('status', 'like', "%$search%")
+                    ->orWhere('price', 'like', "%$search%")
+                    ->orWhere('location', 'like', "%$search%");
+                   
+            });
+        }
+
+        //  Filter by type
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+
+        // Filter by country
+        if ($request->filled('country')) {
+            $query->where('country', 'like', "%{$request->country}%");
+        }
+
+        // Filter by location
+        if ($request->filled('location')) {
+            $query->where('location', 'like', "%{$request->location}%");
+        }
+
+        // Filter by status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        //  Filter by date
+        if ($request->filled('date_from') && $request->filled('date_to')) {
+            $query->whereBetween('created_at', [
+                Carbon::parse($request->date_from)->startOfDay(),
+                Carbon::parse($request->date_to)->endOfDay(),
+            ]);
+        } elseif ($request->filled('date_from')) {
+            $query->whereDate('created_at', '>=', Carbon::parse($request->date_from));
+        } elseif ($request->filled('date_to')) {
+            $query->whereDate('created_at', '<=', Carbon::parse($request->date_to));
+        }
+
+        // 🧾 Get filtered results
+        $partners = $query->latest()->paginate(10)->appends($request->query());
+
+        // Dashboard stats
+        $totalPartners = PartnerService::count();
+        $activePartners = PartnerService::where('status', 'Active')->count();
+        $inactivePartners = PartnerService::where('status', 'Pending')->count();
+
+        return view('admin.partner-service-list', compact('partners', 'totalPartners', 'activePartners', 'inactivePartners'));
+    }
+
+    public function approvePartnerService($id)
+    {
+        $service = PartnerService::findOrFail($id);
+        $service->status = 'Active';
+        $service->save();
+
+        return redirect()->back()->with('success', 'Partner service approved successfully.');
     }
 
     public function store(Request $request)
@@ -442,4 +715,3 @@ class PartnerController extends Controller
         ]);
     }
 }
-

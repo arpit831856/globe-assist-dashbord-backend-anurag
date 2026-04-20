@@ -220,8 +220,12 @@
 
 
     <div class="main">
-                @include('partner.layouts.header');
-
+<div class="page-header">
+        <div class="page-header-left">
+          <h1><i class="fa fa-exclamation-circle"></i> Complaints & Issues</h1>
+          <p>Manage customer complaints and work towards resolutions</p>
+        </div>
+      </div>
       <div class="complaints-container">
         <div class="complaints-stats">
           <div class="stat-box">

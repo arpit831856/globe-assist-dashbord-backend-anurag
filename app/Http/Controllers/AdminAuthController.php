@@ -14,7 +14,10 @@ class AdminAuthController extends Controller
     {
         return view('admin.login');
     }
-
+public function changePasswordForm()
+    {
+        return view('admin.partials.change-password');
+    }
   public function login(Request $request)
     {
         $request->validate([
@@ -41,20 +44,20 @@ class AdminAuthController extends Controller
 public function changePassword(Request $request)
 {
     $request->validate([
-        'old_password' => 'required',
+        'current_password' => 'required',
         'new_password' => 'required|min:8|confirmed',
     ]);
 
     $admin = Auth::guard('admin')->user();
 
-    if (!Hash::check($request->old_password, $admin->password)) {
+    if (!Hash::check($request->current_password, $admin->password)) {
         return response()->json(['success' => false, 'message' => 'Old password is incorrect!'], 400);
     }
 
     $admin->password = Hash::make($request->new_password);
     $admin->save();
+        return redirect()->route('admin.change-password-form')->with('success', 'Password changed successfully!');
 
-    return response()->json(['success' => true, 'message' => 'Password changed successfully!']);
 }
 
 

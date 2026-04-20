@@ -3,6 +3,87 @@
 @section('title', 'Add Link Management')
 
 @section('content')
+<style>
+#toastContainer{
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 99999;
+}
+
+.page-alert{
+    min-width: 320px;
+    max-width: 420px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.18);
+    animation: slideIn .4s ease;
+    font-size: 14px;
+}
+
+.success-alert{
+    background: linear-gradient(135deg,#0f172a,#1d4ed8);
+}
+
+.error-alert{
+    background: linear-gradient(135deg,#991b1b,#ef4444);
+}
+
+.page-alert button{
+    margin-left:auto;
+    background:none;
+    border:none;
+    color:#fff;
+    font-size:20px;
+    cursor:pointer;
+}
+
+@keyframes slideIn{
+    from{
+        opacity:0;
+        transform:translateX(100%);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+</style>
+{{-- REMOVE OLD ALERTS --}}
+{{-- 
+@if (session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+@endif
+
+@if ($errors->any())
+    <div class="alert alert-danger">...</div>
+@endif
+--}}
+
+{{-- ADD THIS TOAST MESSAGE CODE --}}
+@if(session('success'))
+<div class="page-alert success-alert" id="flashMessage">
+    <i class="fas fa-check-circle"></i>
+    <span>{{ session('success') }}</span>
+    <button onclick="closeFlashMessage()">×</button>
+</div>
+@endif
+
+@if(session('error') || $errors->any())
+<div class="page-alert error-alert" id="flashMessage">
+    <i class="fas fa-times-circle"></i>
+    <span>
+        {{ session('error') ?? 'Something went wrong!' }}
+    </span>
+    <button onclick="closeFlashMessage()">×</button>
+</div>
+@endif
+
+<div id="toastContainer"></div>
     <div class="page-content">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h4 class="page-title mb-0">Add Link Management</h4>
@@ -11,19 +92,7 @@
             </button>
         </div>
 
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul class="mb-0">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+     
 
         <div class="card">
             <div class="card-body">
@@ -186,4 +255,28 @@
             document.getElementById('editAddLinkForm').action = `{{ url('admin/add-links/update') }}/${id}`;
         });
     </script>
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const flash = document.getElementById("flashMessage");
+
+    if (flash) {
+        document.getElementById("toastContainer").appendChild(flash);
+
+        setTimeout(() => {
+            flash.style.transition = "0.4s";
+            flash.style.opacity = "0";
+            flash.style.transform = "translateX(100%)";
+
+            setTimeout(() => flash.remove(), 400);
+        }, 3000);
+    }
+
+});
+
+function closeFlashMessage() {
+    let flash = document.getElementById("flashMessage");
+    if (flash) flash.remove();
+}
+</script>
 @endsection

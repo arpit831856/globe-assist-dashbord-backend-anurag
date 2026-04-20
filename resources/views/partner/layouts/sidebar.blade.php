@@ -1,16 +1,40 @@
+<style>
+  .sidebar-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 0;
+    text-align: center;
+}
+
+.sidebar-logo img {
+    width: 110px;
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 8px;
+}
+
+.sidebar-tagline {
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+}
+  </style>
 <div class="sidebar" id="sidebar">
   <div class="sidebar-header">
-    <div class="sidebar-logo">Globe<span>Assist</span></div>
-    <div class="sidebar-tagline">Partner Dashboard</div>
-  </div>
+    <div class="sidebar-logo">
+        <img src="{{ asset('assets/globe assist logo.png') }}" alt="Globe Assist Logo">
+    </div>
+</div>
 
-  <div class="sidebar-profile">
+  {{-- <div class="sidebar-profile">
     <img src="https://i.pravatar.cc/150?img=4" alt="" />
     <div>
       <h4>Verified Partner</h4>
       <p>Authorized Service Professional</p>
     </div>
-  </div>
+  </div> --}}
 
   <ul class="sidebar-menu">
     <li class="menu-section-label">Main</li>
@@ -64,6 +88,12 @@
     <li>
       <a href="{{ route('partner.payments') }}" target="contentFrame" class="{{ request()->routeIs('partner.payments') ? 'active' : '' }}">
         <i class="fa fa-wallet"></i> Payment Status
+      </a>
+    </li>
+
+    <li>
+      <a href="{{ route('partner.change-password') }}" target="contentFrame" class="{{ request()->routeIs('partner.change-password') ? 'active' : '' }}">
+        <i class="fa fa-key"></i> Change Password
       </a>
     </li>
 

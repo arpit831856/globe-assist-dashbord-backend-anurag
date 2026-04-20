@@ -12,7 +12,12 @@ body {
   background-color: #a1bad5;
    font-family: "Poppins", sans-serif;
 }
-
+.dropdown-item i,
+.btn i {
+    width: 18px;
+    text-align: center;
+    display: inline-block;
+}
 .sidebar {
   background-color: #1a386c;
   height: 100vh;

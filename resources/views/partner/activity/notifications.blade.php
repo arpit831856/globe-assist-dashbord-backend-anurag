@@ -173,8 +173,13 @@
 
 
     <div class="main">
-                @include('partner.layouts.header');
-
+ <div class="page-header">
+        <div class="page-header-left">
+          <h1><i class="fa fa-bell"></i> Notifications</h1>
+          <p>Stay updated with all your important alerts and messages</p>
+        </div>
+        <span class="page-header-badge">3 Unread</span>
+      </div>
 
       <div class="notifications-container">
         <div class="notifications-filters">

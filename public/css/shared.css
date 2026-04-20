@@ -245,7 +245,7 @@ body {
   gap: 12px;
   padding: 12px 24px;
   text-decoration: none;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--gray-100);
   transition: all 0.2s;
   border-left: 3px solid transparent;
   position: relative;
@@ -290,7 +290,7 @@ body {
   font-size: 9px;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  color: rgba(255, 255, 255, 0.2);
+  color: var(--gray-400);
   padding: 16px 24px 5px;
   font-weight: 700;
   font-family: var(--font-display);

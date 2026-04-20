@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GlobeAssist — My Services</title>
+    <title>GlobeAssist — Services History</title>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
       rel="stylesheet"
@@ -14,859 +14,357 @@
     />
     <link rel="stylesheet" href="{{ asset('css/shared.css') }}" />
     <style>
-      /* ==================== SERVICES-SPECIFIC STYLES ==================== */
-      .sv-setup {
-        background: var(--white);
-        border-radius: var(--radius-2xl);
-        padding: 70px 40px;
-        text-align: center;
-        box-shadow: var(--shadow-md);
-        border: 1px solid var(--gray-200);
-      }
-      .sv-setup-icon {
-        width: 76px;
-        height: 76px;
-        background: var(--blue-50);
-        border-radius: 18px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 20px;
-        font-size: 32px;
-        color: var(--blue-600);
-        border: 1px solid var(--blue-100);
-      }
-      .sv-setup h2 {
-        font-family: var(--font-display);
-        font-size: 21px;
-        color: var(--blue-950);
-        margin-bottom: 10px;
-        font-weight: 700;
-      }
-      .sv-setup p {
-        color: var(--gray-400);
-        font-size: 14px;
-        margin: 0 auto 28px;
-        max-width: 380px;
-        line-height: 1.65;
-      }
-      .sv-setup-btn {
-        background: var(--blue-600);
-        color: #fff;
-        border: none;
-        padding: 14px 32px;
-        border-radius: var(--radius-md);
-        font-size: 15px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: 0.2s;
-        font-family: var(--font-display);
-      }
-      .sv-setup-btn:hover {
-        background: var(--accent-hover);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(35, 64, 168, 0.3);
-      }
-
-      .sv-topbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 20px;
-        gap: 14px;
-        flex-wrap: wrap;
-      }
-      .sv-topbar-left h2 {
-        font-family: var(--font-display);
-        font-size: 21px;
-        color: var(--blue-950);
-        font-weight: 700;
-        letter-spacing: -0.3px;
-      }
-      .sv-topbar-left p {
-        font-size: 13px;
-        color: var(--gray-400);
-        margin-top: 2px;
-      }
-      .sv-topbar-right {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-      }
-      .sv-btn {
-        padding: 10px 18px;
-        border-radius: var(--radius-sm);
-        border: none;
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: 0.2s;
-        display: flex;
-        align-items: center;
-        gap: 7px;
-        font-family: var(--font-body);
-      }
-      .sv-btn-outline {
-        background: var(--white);
-        color: var(--gray-700);
-        border: 1.5px solid var(--gray-200);
-      }
-      .sv-btn-outline:hover {
-        border-color: var(--blue-400);
-        color: var(--blue-600);
-      }
-      .sv-btn-primary {
-        background: var(--blue-600);
-        color: #fff;
-      }
-      .sv-btn-primary:hover {
-        background: var(--accent-hover);
-        transform: translateY(-1px);
-        box-shadow: 0 6px 16px rgba(35, 64, 168, 0.3);
-      }
-
-      .sv-pcard {
-        background: var(--white);
-        border-radius: var(--radius-xl);
-        box-shadow: var(--shadow-md);
-        margin-bottom: 22px;
-        overflow: hidden;
-        border: 1px solid var(--gray-200);
-      }
-      .sv-pcard-top {
-        padding: 24px 26px 20px;
-        display: flex;
-        align-items: flex-start;
-        gap: 20px;
-        border-bottom: 1px solid var(--gray-100);
-        flex-wrap: wrap;
-      }
-      .sv-pcard-avatar {
-        width: 82px;
-        height: 82px;
-        border-radius: var(--radius-md);
-        object-fit: cover;
-        border: 2px solid var(--blue-100);
-        flex-shrink: 0;
-      }
-      .sv-pcard-avatar-ph {
-        width: 82px;
-        height: 82px;
-        border-radius: var(--radius-md);
-        background: var(--blue-50);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 28px;
-        color: var(--blue-500);
-        flex-shrink: 0;
-        border: 2px solid var(--blue-100);
-      }
-      .sv-pcard-info {
-        flex: 1;
-        min-width: 180px;
-      }
-      .sv-pcard-info h3 {
-        font-family: var(--font-display);
-        font-size: 18px;
-        font-weight: 700;
-        color: var(--blue-950);
-        margin-bottom: 5px;
-      }
-      .sv-pcard-bio {
-        font-size: 14px;
-        color: var(--gray-500);
-        line-height: 1.55;
-        margin-bottom: 10px;
-      }
-      .sv-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-      }
-      .sv-tag {
-        background: var(--blue-50);
-        color: var(--blue-600);
-        padding: 4px 11px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-        border: 1px solid var(--blue-100);
-        font-family: var(--font-display);
-      }
-      .sv-pcard-rating {
-        text-align: right;
-        flex-shrink: 0;
-      }
-      .sv-rating-big {
-        font-family: var(--font-display);
-        font-size: 38px;
-        font-weight: 800;
-        color: var(--blue-950);
-        line-height: 1;
-        letter-spacing: -1px;
-      }
-      .sv-stars {
-        color: #f59e0b;
-        font-size: 14px;
-        margin: 4px 0;
-      }
-      .sv-rating-count {
-        font-size: 12px;
-        color: var(--gray-400);
-      }
-      .sv-pcard-meta {
-        display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        gap: 0;
-        border-top: 1px solid var(--gray-100);
-      }
-      .sv-meta-col {
-        padding: 16px 14px;
-        border-right: 1px solid var(--gray-100);
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-        transition: all 0.2s;
-        background: var(--white);
-      }
-      .sv-meta-col:hover {
-        background: var(--blue-50);
-      }
-      .sv-meta-col:last-child {
-        border-right: none;
-      }
-      .sv-meta-col i {
-        color: var(--blue-500);
-        font-size: 18px;
-        width: 24px;
-        flex-shrink: 0;
-      }
-      .sv-meta-lbl {
-        font-size: 10px;
-        color: var(--gray-400);
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-        font-weight: 700;
-        font-family: var(--font-display);
-      }
-      .sv-meta-val {
-        font-size: 13px;
-        font-weight: 700;
-        color: var(--blue-950);
-        font-family: var(--font-display);
-      }
-
-      .sv-sec-hdr {
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        margin-bottom: 14px;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 26px;
-      }
-      .sv-sec-title {
-        font-family: var(--font-display);
-        font-size: 17px;
-        font-weight: 700;
-        color: var(--blue-950);
-      }
-      .sv-sec-sub {
-        font-size: 13px;
-        color: var(--gray-400);
-        margin-top: 2px;
-      }
-      .sv-link-btn {
-        font-size: 14px;
-        color: var(--blue-600);
-        font-weight: 600;
-        cursor: pointer;
-        background: none;
-        border: none;
-        padding: 0;
-        transition: 0.2s;
-      }
-      .sv-link-btn:hover {
-        color: var(--accent-hover);
-      }
-
-      .sv-gallery {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 10px;
-      }
-      .sv-gitem {
-        border-radius: var(--radius-md);
-        overflow: hidden;
-        aspect-ratio: 1;
-        background: var(--gray-200);
-        position: relative;
-        cursor: pointer;
-      }
-      .sv-gitem img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: 0.3s;
-      }
-      .sv-gitem:hover img {
-        transform: scale(1.08);
-      }
-      .sv-gitem-overlay {
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
-        opacity: 0;
-        transition: 0.3s;
-        display: flex;
-        align-items: flex-end;
-        padding: 8px;
-      }
-      .sv-gitem:hover .sv-gitem-overlay {
-        opacity: 1;
-      }
-      .sv-gitem-overlay span {
-        color: #fff;
-        font-size: 12px;
-        font-weight: 600;
-      }
-      .sv-gitem-del {
-        position: absolute;
-        top: 6px;
-        right: 6px;
-        width: 24px;
-        height: 24px;
-        background: rgba(220, 38, 38, 0.85);
-        border-radius: 6px;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-        font-size: 11px;
-        cursor: pointer;
-        z-index: 2;
-      }
-      .sv-gitem:hover .sv-gitem-del {
-        display: flex;
-      }
-      .sv-gitem-overlay-count {
-        position: absolute;
-        inset: 0;
-        background: rgba(14, 21, 71, 0.65);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: var(--radius-md);
-        cursor: pointer;
-        color: #fff;
-        font-size: 22px;
-        font-weight: 800;
-        flex-direction: column;
-        gap: 4px;
-        font-family: var(--font-display);
-      }
-      .sv-gitem-overlay-count span {
-        font-size: 12px;
-        font-weight: 500;
-        opacity: 0.85;
-      }
-      .sv-gadd {
-        border: 2px dashed var(--gray-300);
-        border-radius: var(--radius-md);
-        aspect-ratio: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 7px;
-        cursor: pointer;
-        color: var(--gray-400);
-        font-size: 13px;
-        transition: 0.22s;
-        position: relative;
-        overflow: hidden;
-        font-family: var(--font-display);
-      }
-      .sv-gadd:hover {
-        border-color: var(--blue-400);
-        color: var(--blue-500);
-        background: var(--blue-50);
-      }
-      .sv-gadd i {
-        font-size: 22px;
-      }
-      .sv-gadd input {
-        position: absolute;
-        inset: 0;
-        opacity: 0;
-        cursor: pointer;
-      }
-
-      .sv-service-row {
-        background: var(--white);
-        border-radius: var(--radius-xl);
-        box-shadow: var(--shadow-md);
-        margin-bottom: 22px;
-        overflow: hidden;
-        transition:
-          box-shadow 0.3s,
-          transform 0.3s;
-        border: 1px solid var(--gray-200);
-      }
-      .sv-service-row:hover {
-        box-shadow: var(--shadow-xl);
-        transform: translateY(-3px);
-      }
-      .sv-row-main {
-        display: flex;
-        min-height: 290px;
-      }
-      .sv-row-imgblock {
-        width: 360px;
-        flex-shrink: 0;
-        position: relative;
-        overflow: hidden;
-        background: var(--blue-950);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-      }
-      .sv-row-imgblock img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        display: block;
-      }
-      .sv-row-imgblock:hover img {
-        transform: scale(1.06);
-      }
-      .sv-row-imgblock .no-img-icon {
-        font-size: 52px;
-        color: rgba(255, 255, 255, 0.1);
-      }
-      .sv-row-img-grad {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 55%;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
-        pointer-events: none;
-      }
-      .sv-row-img-hover {
-        position: absolute;
-        inset: 0;
-        background: rgba(14, 21, 71, 0.35);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        transition: opacity 0.3s;
-        color: #fff;
-        gap: 8px;
-      }
-      .sv-row-img-hover i {
-        font-size: 28px;
-      }
-      .sv-row-img-hover span {
-        font-size: 13px;
-        font-weight: 700;
-        font-family: var(--font-display);
-      }
-      .sv-row-imgblock:hover .sv-row-img-hover {
-        opacity: 1;
-      }
-      .sv-row-badges {
-        position: absolute;
-        top: 14px;
-        left: 14px;
-        right: 14px;
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-      }
-      .sv-row-cat {
-        background: rgba(14, 21, 71, 0.65);
-        color: #fff;
-        font-size: 11px;
-        padding: 4px 12px;
-        border-radius: 30px;
-        font-weight: 700;
-        backdrop-filter: blur(8px);
-        font-family: var(--font-display);
-      }
-      .sv-row-status {
-        padding: 4px 12px;
-        border-radius: 30px;
-        font-size: 11px;
-        font-weight: 800;
-        backdrop-filter: blur(8px);
-        font-family: var(--font-display);
-      }
-      .sv-row-status.active {
-        background: rgba(5, 150, 105, 0.9);
-        color: #fff;
-      }
-      .sv-row-status.pending {
-        background: rgba(217, 119, 6, 0.9);
-        color: #fff;
-      }
-      .sv-row-img-count {
-        position: absolute;
-        bottom: 12px;
-        left: 14px;
-        background: rgba(14, 21, 71, 0.6);
-        color: #fff;
-        font-size: 11px;
-        padding: 4px 10px;
-        border-radius: 20px;
-        font-weight: 600;
-        backdrop-filter: blur(6px);
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        font-family: var(--font-mono);
-      }
-      .sv-row-info {
-        flex: 1;
-        min-width: 0;
-        display: flex;
-        flex-direction: column;
-      }
-      .sv-row-info-body {
-        flex: 1;
-        padding: 24px 28px 18px;
-        display: flex;
-        flex-direction: column;
-      }
-      .sv-row-title-row {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 12px;
-        margin-bottom: 10px;
-      }
-      .sv-row-info-body h3 {
-        font-family: var(--font-display);
-        font-size: 19px;
-        font-weight: 800;
-        color: var(--blue-950);
-        line-height: 1.25;
-        letter-spacing: -0.3px;
-      }
-      .sv-row-del-btn {
-        width: 36px;
-        height: 36px;
-        border-radius: var(--radius-sm);
-        border: none;
-        background: var(--danger-bg);
-        color: var(--danger);
-        font-size: 13px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: 0.2s;
-        flex-shrink: 0;
-      }
-      .sv-row-del-btn:hover {
-        background: var(--danger);
-        color: #fff;
-      }
-      .sv-row-desc {
-        font-size: 14px;
-        color: var(--gray-500);
-        line-height: 1.7;
-        margin-bottom: 18px;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
-      .sv-row-pills {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-bottom: 14px;
-      }
-      .sv-row-pill {
-        display: flex;
-        align-items: center;
-        gap: 9px;
-        background: var(--gray-100);
-        border: 1px solid var(--gray-200);
-        border-radius: var(--radius-sm);
-        padding: 8px 13px;
-        transition: 0.2s;
-      }
-      .sv-row-pill:hover {
-        background: var(--blue-50);
-        border-color: var(--blue-100);
-      }
-      .sv-row-pill-icon {
-        width: 30px;
-        height: 30px;
-        border-radius: 7px;
-        background: var(--blue-50);
-        color: var(--blue-600);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 13px;
-        flex-shrink: 0;
-      }
-      .sv-row-pill-lbl {
-        font-size: 10px;
-        color: var(--gray-400);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        font-weight: 700;
-        font-family: var(--font-display);
-      }
-      .sv-row-pill-val {
-        font-size: 13px;
-        font-weight: 700;
-        color: var(--blue-950);
-        margin-top: 1px;
-        font-family: var(--font-display);
-      }
-      .sv-row-highlights {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 7px;
-        margin-bottom: 14px;
-      }
-      .sv-hl {
-        background: var(--blue-50);
-        color: var(--blue-700);
-        padding: 5px 13px;
-        border-radius: 30px;
-        font-size: 12px;
-        font-weight: 700;
-        border: 1px solid var(--blue-100);
-        font-family: var(--font-display);
-      }
-      .sv-row-info-footer {
-        padding: 16px 28px;
-        border-top: 1px solid var(--gray-100);
-        background: var(--gray-100);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 14px;
-        flex-wrap: wrap;
-      }
-      .sv-row-price {
-        font-family: var(--font-display);
-        font-size: 27px;
-        font-weight: 900;
-        color: var(--blue-700);
-        letter-spacing: -0.5px;
-      }
-      .sv-row-price-unit {
-        font-size: 13px;
-        color: var(--gray-400);
-      }
-      .sv-row-price-note {
-        font-size: 11px;
-        color: var(--gray-400);
-        margin-top: 2px;
-      }
-      .sv-row-thumbs {
-        padding: 13px 28px;
-        border-top: 1px solid var(--gray-100);
-        background: var(--white);
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-      .sv-row-thumb-label {
-        font-size: 10px;
-        color: var(--gray-400);
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-        flex-shrink: 0;
-        font-family: var(--font-display);
-      }
-      .sv-row-thumbs-list {
-        display: flex;
-        gap: 7px;
-        overflow-x: auto;
-        flex: 1;
-        padding-bottom: 2px;
-      }
-      .sv-row-thumbs-list::-webkit-scrollbar {
-        height: 3px;
-      }
-      .sv-row-thumbs-list::-webkit-scrollbar-track {
-        background: var(--gray-100);
-      }
-      .sv-row-thumbs-list::-webkit-scrollbar-thumb {
-        background: var(--blue-300);
-        border-radius: 10px;
-      }
-      .sv-row-thumb {
-        width: 64px;
-        height: 64px;
-        border-radius: var(--radius-sm);
-        object-fit: cover;
-        cursor: pointer;
-        transition: 0.25s;
-        flex-shrink: 0;
-        border: 2px solid transparent;
-      }
-      .sv-row-thumb:hover {
-        border-color: var(--blue-500);
-        transform: scale(1.08);
-      }
-      .sv-empty {
-        text-align: center;
-        padding: 52px 20px;
-        color: var(--gray-400);
+      .history-container {
         background: var(--white);
         border-radius: var(--radius-lg);
+        padding: 24px;
+        box-shadow: var(--shadow-md);
         border: 1px solid var(--gray-200);
       }
-      .sv-empty i {
-        font-size: 42px;
-        display: block;
-        margin-bottom: 14px;
-        color: var(--gray-300);
-      }
-      .sv-empty h4 {
-        font-size: 15px;
-        color: var(--gray-500);
-        margin-bottom: 5px;
-        font-family: var(--font-display);
-        font-weight: 600;
-      }
-
-      /* Gallery All Modal */
-      #galleryAllModal .modal-box {
-        max-width: 860px;
-      }
-      .gallery-all-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 10px;
-      }
-      .gallery-all-item {
-        border-radius: var(--radius-md);
-        overflow: hidden;
-        aspect-ratio: 1;
-        background: var(--gray-200);
-        cursor: pointer;
-        position: relative;
-      }
-      .gallery-all-item img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: 0.3s;
-      }
-      .gallery-all-item:hover img {
-        transform: scale(1.07);
-      }
-      .gallery-all-item-del {
-        position: absolute;
-        top: 6px;
-        right: 6px;
-        width: 24px;
-        height: 24px;
-        background: rgba(220, 38, 38, 0.85);
-        border-radius: 6px;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-        font-size: 11px;
-        cursor: pointer;
-      }
-      .gallery-all-item:hover .gallery-all-item-del {
+      .history-filters {
         display: flex;
-      }
-
-      .img-prev {
-        display: flex;
-        flex-wrap: wrap;
         gap: 8px;
-        margin-top: 12px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
       }
-      .img-prev img {
-        width: 62px;
-        height: 62px;
-        border-radius: var(--radius-sm);
-        object-fit: cover;
+      .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .history-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 580px;
+      }
+      .history-table thead {
+        background: var(--gray-100);
+        border-bottom: 2px solid var(--gray-200);
+      }
+      .history-table th {
+        padding: 14px 16px;
+        text-align: left;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--gray-500);
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        font-family: var(--font-display);
+        white-space: nowrap;
+      }
+      .history-table td {
+        padding: 15px 16px;
+        border-bottom: 1px solid var(--gray-100);
+        font-size: 14px;
+        color: var(--gray-700);
+      }
+      .history-table tbody tr:hover {
+        background: var(--blue-50);
+      }
+      .history-table tbody tr.hidden {
+        display: none;
+      }
+      .service-name {
+        font-weight: 700;
+        color: var(--blue-950);
+        font-family: var(--font-display);
+      }
+      .service-amount {
+        font-weight: 800;
+        color: var(--blue-700);
+        font-family: var(--font-mono);
+      }
+      .status-badge {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-family: var(--font-display);
+        white-space: nowrap;
+      }
+      .status-badge.completed {
+        background: var(--success-bg);
+        color: var(--success);
+      }
+      .status-badge.pending {
+        background: var(--warning-bg);
+        color: var(--warning);
+      }
+      .status-badge.cancelled {
+        background: var(--danger-bg);
+        color: var(--danger);
+      }
+      .action-link {
+        color: var(--blue-600);
+        cursor: pointer;
+        font-weight: 700;
+        transition: 0.2s;
+        font-family: var(--font-display);
+        font-size: 13px;
+        white-space: nowrap;
+      }
+      .action-link:hover {
+        text-decoration: underline;
       }
 
-      @media (max-width: 1024px) {
-        .sv-pcard-meta {
-          grid-template-columns: repeat(3, 1fr);
-        }
-        .sv-gallery {
-          grid-template-columns: repeat(4, 1fr);
-        }
+      /* Detail Modal */
+      .detail-modal-header {
+        background: linear-gradient(135deg, var(--blue-900), var(--blue-800));
+        padding: 24px;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        color: #fff;
       }
+      .detail-modal-header .svc-id {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.5);
+        margin-bottom: 6px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      .detail-modal-header h2 {
+        font-family: var(--font-display);
+        font-size: 20px;
+        font-weight: 800;
+        letter-spacing: -0.3px;
+        margin-bottom: 10px;
+      }
+      .detail-modal-header .status-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .detail-status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 14px;
+        border-radius: 30px;
+        font-size: 12px;
+        font-weight: 800;
+        font-family: var(--font-display);
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+      }
+      .detail-status-pill.completed {
+        background: rgba(5, 150, 105, 0.2);
+        color: #6ee7b7;
+        border: 1px solid rgba(5, 150, 105, 0.3);
+      }
+      .detail-status-pill.pending {
+        background: rgba(217, 119, 6, 0.2);
+        color: #fcd34d;
+        border: 1px solid rgba(217, 119, 6, 0.3);
+      }
+      .detail-status-pill.cancelled {
+        background: rgba(220, 38, 38, 0.2);
+        color: #fca5a5;
+        border: 1px solid rgba(220, 38, 38, 0.3);
+      }
+      .detail-date-pill {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.5);
+      }
+      .detail-modal-body {
+        padding: 24px;
+      }
+      .detail-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+      .detail-tile {
+        background: var(--gray-100);
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius-md);
+        padding: 16px;
+        transition: 0.2s;
+      }
+      .detail-tile:hover {
+        border-color: var(--blue-200);
+        background: var(--blue-50);
+      }
+      .detail-tile.full {
+        grid-column: 1 / -1;
+      }
+      .detail-tile.highlight {
+        border-left: 4px solid var(--blue-600);
+      }
+      .detail-tile-label {
+        font-size: 11px;
+        color: var(--gray-400);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        font-weight: 700;
+        font-family: var(--font-display);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 7px;
+      }
+      .detail-tile-label i {
+        color: var(--blue-500);
+        font-size: 13px;
+      }
+      .detail-tile-value {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--blue-950);
+        font-family: var(--font-display);
+      }
+      .detail-tile-value.amount-big {
+        font-size: 28px;
+        font-weight: 900;
+        color: var(--blue-700);
+        letter-spacing: -1px;
+      }
+      .detail-tile-sub {
+        font-size: 12px;
+        color: var(--gray-400);
+        margin-top: 4px;
+      }
+      .detail-section-title {
+        font-family: var(--font-display);
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--blue-950);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin: 20px 0 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--gray-200);
+      }
+      .detail-section-title i {
+        color: var(--blue-500);
+      }
+      .payment-status-strip {
+        border-radius: var(--radius-md);
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 14px;
+        border: 1px solid;
+      }
+      .payment-status-strip.paid {
+        background: var(--success-bg);
+        border-color: rgba(5, 150, 105, 0.2);
+      }
+      .payment-status-strip.pending {
+        background: var(--warning-bg);
+        border-color: rgba(217, 119, 6, 0.2);
+      }
+      .payment-status-strip.notpaid {
+        background: var(--danger-bg);
+        border-color: rgba(220, 38, 38, 0.15);
+      }
+      .payment-status-strip-icon {
+        font-size: 26px;
+      }
+      .payment-status-strip.paid .payment-status-strip-icon {
+        color: var(--success);
+      }
+      .payment-status-strip.pending .payment-status-strip-icon {
+        color: var(--warning);
+      }
+      .payment-status-strip.notpaid .payment-status-strip-icon {
+        color: var(--danger);
+      }
+      .payment-status-strip-text strong {
+        font-family: var(--font-display);
+        font-size: 15px;
+        font-weight: 700;
+        display: block;
+        color: var(--blue-950);
+      }
+      .payment-status-strip-text span {
+        font-size: 13px;
+        color: var(--gray-500);
+      }
+      .complaint-strip {
+        border-radius: var(--radius-md);
+        padding: 16px 20px;
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        border: 1px solid;
+      }
+      .complaint-strip.has-complaint {
+        background: var(--danger-bg);
+        border-color: rgba(220, 38, 38, 0.15);
+      }
+      .complaint-strip.no-complaint {
+        background: var(--success-bg);
+        border-color: rgba(5, 150, 105, 0.15);
+      }
+      .complaint-strip-icon {
+        font-size: 22px;
+        margin-top: 1px;
+      }
+      .complaint-strip.has-complaint .complaint-strip-icon {
+        color: var(--danger);
+      }
+      .complaint-strip.no-complaint .complaint-strip-icon {
+        color: var(--success);
+      }
+      .complaint-strip-text strong {
+        font-family: var(--font-display);
+        font-size: 14px;
+        font-weight: 700;
+        display: block;
+        color: var(--blue-950);
+        margin-bottom: 4px;
+      }
+      .complaint-strip-text p {
+        font-size: 13px;
+        color: var(--gray-500);
+        line-height: 1.55;
+      }
+      .detail-close-btn {
+        width: 100%;
+        padding: 13px;
+        background: var(--blue-600);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius-md);
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.2s;
+        margin-top: 22px;
+        font-family: var(--font-display);
+      }
+      .detail-close-btn:hover {
+        background: var(--accent-hover);
+        box-shadow: 0 6px 18px rgba(35, 64, 168, 0.3);
+      }
+
       @media (max-width: 768px) {
-        .sv-row-main {
-          flex-direction: column;
-        }
-        .sv-row-imgblock {
-          width: 100%;
-          min-height: 210px;
-        }
-        .sv-pcard-top {
-          flex-direction: column;
-        }
-        .sv-pcard-meta {
-          grid-template-columns: repeat(3, 1fr);
-        }
-        .sv-gallery {
-          grid-template-columns: repeat(3, 1fr);
-        }
-        .sv-topbar {
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 12px;
-        }
-        .sv-topbar-right {
-          width: 100%;
-        }
-        .sv-btn {
-          flex: 1;
-          justify-content: center;
+        .detail-grid {
+          grid-template-columns: 1fr;
         }
       }
       @media (max-width: 599px) {
-        .sv-setup {
-          padding: 40px 22px;
+        .history-table th,
+        .history-table td {
+          padding: 12px 10px;
+          font-size: 13px;
         }
-        .sv-pcard-meta {
-          grid-template-columns: repeat(2, 1fr);
+        .detail-modal-header {
+          padding: 18px;
         }
-        .sv-gallery {
-          grid-template-columns: repeat(2, 1fr);
+        .detail-modal-header h2 {
+          font-size: 17px;
         }
-        .sv-row-info-body {
-          padding: 18px 16px 14px;
-        }
-        .sv-row-thumbs {
-          padding: 12px 16px;
-        }
-        .sv-row-info-footer {
-          padding: 14px 16px;
-        }
-        .sv-row-price {
-          font-size: 22px;
-        }
-        .gallery-all-grid {
-          grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        .detail-modal-body {
+          padding: 16px;
         }
       }
     </style>
@@ -895,129 +393,213 @@
       />
     </div>
 
-             @include('partner.layouts.sidebar');
+                 @include('partner.layouts.sidebar');
 
 
     <div class="main">
-               @include('partner.layouts.header');
-
-
-      <!-- Setup Screen -->
-      <div id="svSetup" class="sv-setup">
-        <div class="sv-setup-icon"><i class="fa fa-store"></i></div>
-        <h2>Set Up Your Partner Profile</h2>
-        <p>
-          Tell clients who you are, what services you offer, where you work, and
-          how much you charge — all in one professional dashboard.
-        </p>
-        <button class="sv-setup-btn" onclick="openProfileModal()">
-          <i class="fa fa-plus"></i>&nbsp; Create Partner Profile
-        </button>
+      <div class="page-header">
+        <div class="page-header-left">
+          <h1><i class="fa fa-history"></i> Services History</h1>
+          <p>Complete record of your completed and ongoing services</p>
+        </div>
+        <span class="page-header-badge">6 Records</span>
       </div>
-
-      <!-- Main Dashboard (hidden until profile saved) -->
-      <div id="svDashboard" style="display: none">
-        <div class="sv-topbar">
-          <div class="sv-topbar-left">
-            <h2 id="dash-name">Partner Dashboard</h2>
-            <p id="dash-tagline">Your services at a glance</p>
-          </div>
-          <div class="sv-topbar-right">
-            <button class="sv-btn sv-btn-outline" onclick="openProfileModal()">
-              <i class="fa fa-pen"></i> Edit Profile
-            </button>
-            <button class="sv-btn sv-btn-primary" onclick="openServiceModal()">
-              <i class="fa fa-plus"></i> Add Service
-            </button>
-          </div>
-        </div>
-
-        <div class="sv-pcard">
-          <div class="sv-pcard-top">
-            <div>
-              <div class="sv-pcard-avatar-ph" id="pc-av-ph">
-                <i class="fa fa-user"></i>
-              </div>
-              <img
-                id="pc-av-img"
-                class="sv-pcard-avatar"
-                style="display: none"
-                src=""
-                alt=""
-              />
-            </div>
-            <div class="sv-pcard-info">
-              <h3 id="pc-name">-</h3>
-              <p class="sv-pcard-bio" id="pc-bio">-</p>
-              <div class="sv-tags" id="pc-tags"></div>
-            </div>
-            <div class="sv-pcard-rating">
-              <div class="sv-rating-big" id="pc-rating">-</div>
-              <div class="sv-stars">★★★★★</div>
-              <div class="sv-rating-count" id="pc-reviews">-</div>
-            </div>
-          </div>
-          <div class="sv-pcard-meta" id="pc-meta"></div>
-        </div>
-
-        <div class="sv-sec-hdr">
-          <div>
-            <div class="sv-sec-title">Past Work Gallery</div>
-            <div class="sv-sec-sub">
-              Photos from completed projects &amp; events
-            </div>
-          </div>
-          <div
-            style="
-              display: flex;
-              gap: 12px;
-              align-items: center;
-              flex-wrap: wrap;
-            "
+      <div class="history-container">
+        <div class="history-filters">
+          <button
+            class="filter-btn active"
+            onclick="filterHistory('all', this)"
           >
-            <button
-              class="sv-link-btn"
-              id="seeAllBtn"
-              style="display: none"
-              onclick="openGalleryAll()"
-            >
-              <i class="fa fa-th"></i> See All Photos
-            </button>
-            <button
-              class="sv-link-btn"
-              onclick="document.getElementById('galleryInput').click()"
-            >
-              <i class="fa fa-plus"></i> Add Photo
-            </button>
-          </div>
+            All
+          </button>
+          <button class="filter-btn" onclick="filterHistory('completed', this)">
+            Completed
+          </button>
+          <button class="filter-btn" onclick="filterHistory('pending', this)">
+            Pending
+          </button>
+          <button class="filter-btn" onclick="filterHistory('cancelled', this)">
+            Cancelled
+          </button>
         </div>
-        <div class="sv-gallery-wrap">
-          <div class="sv-gallery" id="galleryGrid">
-            <div class="sv-gadd">
-              <i class="fa fa-cloud-upload-alt"></i><span>Upload Photos</span>
-              <input
-                type="file"
-                id="galleryInput"
-                multiple
-                accept="image/*"
-                onchange="addGalleryPhotos(event)"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div class="sv-sec-hdr">
-          <div>
-            <div class="sv-sec-title">My Services</div>
-            <div class="sv-sec-sub">Full details of each service you offer</div>
-          </div>
-        </div>
-        <div id="servicesContainer">
-          <div class="sv-empty" id="svcEmpty">
-            <i class="fa fa-inbox"></i>
-            <h4>No services added yet</h4>
-            <p>Click "Add Service" above to get started</p>
-          </div>
+        <div class="table-responsive">
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>Service Name</th>
+                <th>Client Name</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="historyTableBody">
+              <tr
+                class="history-row"
+                data-status="completed"
+                data-service="Tour Management - Delhi"
+                data-client="Sharma Family"
+                data-date="Mar 05, 2026"
+                data-amount="₹8,500"
+                data-location="Delhi, Agra Circuit"
+                data-payment-status="paid"
+                data-payment-date="Mar 07, 2026"
+                data-complaint="none"
+                data-description="Full-day tour management including airport pickup, guided sightseeing at India Gate, Qutub Minar, Humayun's Tomb, and drop-back. Included 2 professional guides and a luxury coach."
+                data-duration="1 Day (8 Hours)"
+                data-invoice="INV-2026-0312"
+              >
+                <td class="service-name">Tour Management - Delhi</td>
+                <td>Sharma Family</td>
+                <td>Mar 05, 2026</td>
+                <td class="service-amount">₹8,500</td>
+                <td><span class="status-badge completed">Completed</span></td>
+                <td>
+                  <span class="action-link" onclick="openHistoryDetail(this)"
+                    ><i class="fa fa-eye"></i> View</span
+                  >
+                </td>
+              </tr>
+              <tr
+                class="history-row"
+                data-status="pending"
+                data-service="Event Coordination - Wedding"
+                data-client="Patel Events Pvt Ltd"
+                data-date="Mar 10, 2026"
+                data-amount="₹15,000"
+                data-location="The Grand Hotel, Connaught Place, Delhi"
+                data-payment-status="pending"
+                data-payment-date="—"
+                data-complaint="has-complaint"
+                data-complaint-id="#CPM-2026-002"
+                data-complaint-title="Communication issue with client"
+                data-description="Wedding coordination for 200+ guests. Responsibilities include guest management, stage setup, catering liaison, and photography direction."
+                data-team="8 Staff Members"
+                data-duration="2 Days"
+                data-invoice="INV-2026-0318"
+              >
+                <td class="service-name">Event Coordination - Wedding</td>
+                <td>Patel Events Pvt Ltd</td>
+                <td>Mar 10, 2026</td>
+                <td class="service-amount">₹15,000</td>
+                <td><span class="status-badge pending">Pending</span></td>
+                <td>
+                  <span class="action-link" onclick="openHistoryDetail(this)"
+                    ><i class="fa fa-eye"></i> View</span
+                  >
+                </td>
+              </tr>
+              <tr
+                class="history-row"
+                data-status="completed"
+                data-service="Ground Staff - Conference"
+                data-client="ABC Corporation"
+                data-date="Mar 02, 2026"
+                data-amount="₹5,200"
+                data-location="Aerocity Conference Hall, New Delhi"
+                data-payment-status="paid"
+                data-payment-date="Mar 04, 2026"
+                data-complaint="none"
+                data-description="Corporate conference ground staff for a 150-person technology summit. Handled registration, badge management, and VIP guest assistance."
+                data-team="6 Staff Members"
+                data-duration="1 Day (10 Hours)"
+                data-invoice="INV-2026-0298"
+              >
+                <td class="service-name">Ground Staff - Conference</td>
+                <td>ABC Corporation</td>
+                <td>Mar 02, 2026</td>
+                <td class="service-amount">₹5,200</td>
+                <td><span class="status-badge completed">Completed</span></td>
+                <td>
+                  <span class="action-link" onclick="openHistoryDetail(this)"
+                    ><i class="fa fa-eye"></i> View</span
+                  >
+                </td>
+              </tr>
+              <tr
+                class="history-row"
+                data-status="completed"
+                data-service="Photography - Corporate Event"
+                data-client="XYZ Industries Ltd"
+                data-date="Feb 28, 2026"
+                data-amount="₹12,000"
+                data-location="Taj Palace Hotel, Delhi"
+                data-payment-status="paid"
+                data-payment-date="Mar 01, 2026"
+                data-complaint="none"
+                data-description="Full event photography for a corporate gala dinner and awards ceremony. Included candid shots, executive portraits, and a same-day photo highlight reel."
+                data-team="2 Photographers + 1 Editor"
+                data-duration="6 Hours"
+                data-invoice="INV-2026-0287"
+              >
+                <td class="service-name">Photography - Corporate Event</td>
+                <td>XYZ Industries Ltd</td>
+                <td>Feb 28, 2026</td>
+                <td class="service-amount">₹12,000</td>
+                <td><span class="status-badge completed">Completed</span></td>
+                <td>
+                  <span class="action-link" onclick="openHistoryDetail(this)"
+                    ><i class="fa fa-eye"></i> View</span
+                  >
+                </td>
+              </tr>
+              <tr
+                class="history-row"
+                data-status="cancelled"
+                data-service="Event Management - Product Launch"
+                data-client="Tech Startup Company"
+                data-date="Feb 25, 2026"
+                data-amount="₹18,000"
+                data-location="Cyberhub, Gurugram"
+                data-payment-status="notpaid"
+                data-payment-date="—"
+                data-complaint="none"
+                data-description="Product launch event cancelled by client 48 hours before. Cancellation was due to internal funding delays. Cancellation fee of ₹3,000 was charged."
+                data-team="N/A (Cancelled)"
+                data-duration="N/A (Cancelled)"
+                data-invoice="INV-2026-0271"
+              >
+                <td class="service-name">Event Management - Product Launch</td>
+                <td>Tech Startup Company</td>
+                <td>Feb 25, 2026</td>
+                <td class="service-amount">₹18,000</td>
+                <td><span class="status-badge cancelled">Cancelled</span></td>
+                <td>
+                  <span class="action-link" onclick="openHistoryDetail(this)"
+                    ><i class="fa fa-eye"></i> View</span
+                  >
+                </td>
+              </tr>
+              <tr
+                class="history-row"
+                data-status="completed"
+                data-service="Travel Support - Group Tour"
+                data-client="Adventure Club India"
+                data-date="Feb 20, 2026"
+                data-amount="₹7,500"
+                data-location="Manali, Himachal Pradesh"
+                data-payment-status="paid"
+                data-payment-date="Feb 22, 2026"
+                data-complaint="none"
+                data-description="Group travel support for a 25-person adventure tour to Manali. Included vehicle coordination, accommodation check-ins, activity scheduling, and emergency on-call support."
+                data-team="3 Staff Members"
+                data-duration="3 Days"
+                data-invoice="INV-2026-0261"
+              >
+                <td class="service-name">Travel Support - Group Tour</td>
+                <td>Adventure Club India</td>
+                <td>Feb 20, 2026</td>
+                <td class="service-amount">₹7,500</td>
+                <td><span class="status-badge completed">Completed</span></td>
+                <td>
+                  <span class="action-link" onclick="openHistoryDetail(this)"
+                    ><i class="fa fa-eye"></i> View</span
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -1057,650 +639,204 @@
       </div>
     </div>
 
-    <!-- PROFILE MODAL -->
-    <div class="modal-bg" id="profileModal">
-      <div class="modal-box md">
+    <!-- HISTORY DETAIL MODAL -->
+    <div class="modal-bg" id="historyDetailModal">
+      <div class="modal-box lg">
         <div class="modal-hdr">
-          <h3>Partner Profile</h3>
-          <button class="modal-close" onclick="closeProfileModal()">×</button>
+          <h3>Service Details</h3>
+          <button class="modal-close" onclick="closeHistoryDetail()">×</button>
         </div>
-        <div class="modal-body">
-          <form id="profileForm" onsubmit="saveProfile(event)">
-            <div class="f-field">
-              <label>Partner / Business Name</label
-              ><input
-                type="text"
-                id="pName"
-                placeholder="e.g. Rohit Chaudhary - Global Support"
-                required
-              />
+        <div class="modal-body" style="padding: 0">
+          <div class="detail-modal-header">
+            <div class="svc-id" id="hd-invoice">INV-2026-0000</div>
+            <h2 id="hd-service-name">Service Name</h2>
+            <div class="status-row">
+              <span class="detail-status-pill" id="hd-status-pill">Status</span>
+              <span class="detail-date-pill" id="hd-date"
+                ><i class="fa fa-calendar" style="margin-right: 5px"></i
+                >Date</span
+              >
             </div>
-            <div class="f-field">
-              <label>Bio / Tagline</label
-              ><textarea
-                id="pBio"
-                rows="2"
-                placeholder="Short description of your expertise..."
-                required
-              ></textarea>
-            </div>
-            <div class="f-row">
-              <div class="f-field">
-                <label>Years of Experience</label
-                ><input type="text" id="pExp" placeholder="e.g. 5+ Years" />
+          </div>
+          <div class="detail-modal-body">
+            <div class="detail-grid">
+              <div class="detail-tile highlight">
+                <div class="detail-tile-label">
+                  <i class="fa fa-indian-rupee-sign"></i> Service Amount
+                </div>
+                <div class="detail-tile-value amount-big" id="hd-amount">
+                  ₹0
+                </div>
+                <div class="detail-tile-sub">Total billed amount</div>
               </div>
-              <div class="f-field">
-                <label>Projects Completed</label
-                ><input type="text" id="pProjects" placeholder="e.g. 124" />
+              <div class="detail-tile">
+                <div class="detail-tile-label">
+                  <i class="fa fa-user"></i> Client Name
+                </div>
+                <div class="detail-tile-value" id="hd-client">—</div>
+                <div class="detail-tile-sub">Service recipient</div>
               </div>
-            </div>
-            <div class="f-row">
-              <div class="f-field">
-                <label>Service Areas</label
-                ><input type="text" id="pAreas" placeholder="Delhi, Noida..." />
+              <div class="detail-tile">
+                <div class="detail-tile-label">
+                  <i class="fa fa-map-marker-alt"></i> Service Location
+                </div>
+                <div class="detail-tile-value" id="hd-location">—</div>
               </div>
-              <div class="f-field">
-                <label>Languages</label
-                ><input type="text" id="pLangs" placeholder="Hindi, English" />
+              <div class="detail-tile">
+                <div class="detail-tile-label">
+                  <i class="fa fa-clock"></i> Duration
+                </div>
+                <div class="detail-tile-value" id="hd-duration">—</div>
               </div>
-            </div>
-            <div class="f-row">
-              <div class="f-field">
-                <label>Phone Number</label
-                ><input type="text" id="pPhone" placeholder="+91 9320583983" />
-              </div>
-              <div class="f-field">
-                <label>Email Address</label
-                ><input
-                  type="email"
-                  id="pEmail"
-                  placeholder="rohit@gmail.com"
-                />
-              </div>
-            </div>
-            <div class="f-row">
-              <div class="f-field">
-                <label>Rating (out of 5)</label
-                ><input
-                  type="number"
-                  id="pRating"
-                  placeholder="4.8"
-                  min="1"
-                  max="5"
-                  step="0.1"
-                />
-              </div>
-              <div class="f-field">
-                <label>No. of Reviews</label
-                ><input type="text" id="pReviews" placeholder="218" />
+              <div class="detail-tile full">
+                <div class="detail-tile-label">
+                  <i class="fa fa-align-left"></i> Service Description
+                </div>
+                <div
+                  class="detail-tile-value"
+                  id="hd-description"
+                  style="
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: var(--gray-600);
+                    line-height: 1.7;
+                    font-family: var(--font-body);
+                  "
+                >
+                  —
+                </div>
               </div>
             </div>
-            <div class="f-field">
-              <label>Skill Tags (comma separated)</label
-              ><input
-                type="text"
-                id="pTags"
-                placeholder="Tour Manager, Ground Staff, Telecaller..."
-              />
+            <div class="detail-section-title">
+              <i class="fa fa-wallet"></i> Payment Information
             </div>
-            <div class="f-divider"></div>
-            <div class="f-field">
-              <label>Profile Photo</label>
-              <div class="upload-zone">
-                <i class="fa fa-camera"></i>Click to upload your profile
-                photo<input
-                  type="file"
-                  id="pAvatarInput"
-                  accept="image/*"
-                  onchange="previewAvatar(event)"
-                />
+            <div id="hd-payment-strip" class="payment-status-strip">
+              <div class="payment-status-strip-icon">
+                <i class="fa fa-circle-check"></i>
               </div>
-              <img
-                id="pAvatarPreview"
-                style="
-                  width: 80px;
-                  height: 80px;
-                  border-radius: var(--radius-md);
-                  object-fit: cover;
-                  margin-top: 12px;
-                  display: none;
-                  border: 2px solid var(--blue-200);
-                "
-                src=""
-                alt=""
-              />
+              <div class="payment-status-strip-text">
+                <strong id="hd-payment-label">Payment Received</strong>
+                <span id="hd-payment-detail">Payment date details</span>
+              </div>
             </div>
-            <button type="submit" class="modal-submit">
-              <i class="fa fa-check"></i> Save & Go to Dashboard
+            <div class="detail-section-title">
+              <i class="fa fa-exclamation-triangle"></i> Complaint Status
+            </div>
+            <div id="hd-complaint-strip" class="complaint-strip">
+              <div class="complaint-strip-icon">
+                <i id="hd-complaint-icon" class="fa fa-check-circle"></i>
+              </div>
+              <div class="complaint-strip-text">
+                <strong id="hd-complaint-title">No Complaints</strong>
+                <p id="hd-complaint-detail">
+                  No complaints were filed for this service.
+                </p>
+              </div>
+            </div>
+            <button class="detail-close-btn" onclick="closeHistoryDetail()">
+              <i class="fa fa-times" style="margin-right: 8px"></i>Close Details
             </button>
-          </form>
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- SERVICE MODAL -->
-    <div class="modal-bg" id="serviceModal">
-      <div class="modal-box md">
-        <div class="modal-hdr">
-          <h3>Add New Service</h3>
-          <button class="modal-close" onclick="closeServiceModal()">×</button>
-        </div>
-        <div class="modal-body">
-          <form id="serviceForm" onsubmit="saveService(event)">
-            <div class="f-row">
-              <div class="f-field">
-                <label>Category</label>
-                <select id="sCat" required>
-                  <option value="">Select Category</option>
-                  <option>Tour Manager</option>
-                  <option>Ground Staff</option>
-                  <option>Event Coordinator</option>
-                  <option>Telecaller</option>
-                  <option>Travel Support</option>
-                  <option>Photography</option>
-                  <option>Security Staff</option>
-                  <option>Hospitality</option>
-                  <option>Other</option>
-                </select>
-              </div>
-              <div class="f-field">
-                <label>Status</label>
-                <select id="sStat">
-                  <option value="active">Active</option>
-                  <option value="pending">Pending</option>
-                </select>
-              </div>
-            </div>
-            <div class="f-field">
-              <label>Service Title</label
-              ><input
-                type="text"
-                id="sTitle"
-                placeholder="e.g. Premium Tour Management"
-                required
-              />
-            </div>
-            <div class="f-field">
-              <label>Description</label
-              ><textarea
-                id="sDesc"
-                rows="3"
-                placeholder="Describe what clients get..."
-                required
-              ></textarea>
-            </div>
-            <div class="f-divider"></div>
-            <div class="f-row">
-              <div class="f-field">
-                <label>Charge / Rate</label
-                ><input
-                  type="text"
-                  id="sPrice"
-                  placeholder="e.g. Rs.5,000 / day"
-                  required
-                />
-              </div>
-              <div class="f-field">
-                <label>Availability</label>
-                <select id="sAvail">
-                  <option>Full-Time</option>
-                  <option>Part-Time</option>
-                  <option>Weekends Only</option>
-                  <option>On-Call</option>
-                  <option>Contract Basis</option>
-                </select>
-              </div>
-            </div>
-            <div class="f-row">
-              <div class="f-field">
-                <label>Service Location / Area</label
-                ><input
-                  type="text"
-                  id="sLoc"
-                  placeholder="e.g. Delhi, Mumbai"
-                />
-              </div>
-              <div class="f-field">
-                <label>Experience (Years)</label
-                ><input type="number" id="sExp" placeholder="e.g. 5" min="0" />
-              </div>
-            </div>
-            <div class="f-row">
-              <div class="f-field">
-                <label>Team Size</label
-                ><input
-                  type="text"
-                  id="sTeam"
-                  placeholder="e.g. Up to 20 staff"
-                />
-              </div>
-              <div class="f-field">
-                <label>Languages Supported</label
-                ><input
-                  type="text"
-                  id="sLang"
-                  placeholder="e.g. Hindi, English"
-                />
-              </div>
-            </div>
-            <div class="f-field">
-              <label>Highlights (comma separated)</label
-              ><input
-                type="text"
-                id="sHL"
-                placeholder="e.g. 24/7 Support, PAN India"
-              />
-            </div>
-            <div class="f-divider"></div>
-            <div class="f-field">
-              <label>Service / Work Photos</label>
-              <div class="upload-zone">
-                <i class="fa fa-cloud-upload-alt"></i>Upload photos of this
-                service or past work<input
-                  type="file"
-                  id="sImgsInput"
-                  multiple
-                  accept="image/*"
-                  onchange="previewSvcImgs(event)"
-                />
-              </div>
-              <div class="img-prev" id="sImgPrev"></div>
-            </div>
-            <button type="submit" class="modal-submit">
-              <i class="fa fa-plus"></i> Add to Dashboard
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <!-- GALLERY ALL MODAL -->
-    <div class="modal-bg" id="galleryAllModal">
-      <div class="modal-box" style="max-width: 860px">
-        <div class="modal-hdr">
-          <h3 id="galleryAllTitle">All Gallery Photos</h3>
-          <button class="modal-close" onclick="closeGalleryAll()">×</button>
-        </div>
-        <div class="modal-body">
-          <div class="gallery-all-grid" id="galleryAllGrid"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- LIGHTBOX -->
-    <div id="lightbox" onclick="closeLightboxBg(event)">
-      <button id="lightboxClose" onclick="closeLightboxBtn()">
-        <i class="fa fa-times"></i>
-      </button>
-      <img id="lightboxImg" src="" alt="" />
-      <div id="lightboxCaption"></div>
     </div>
 
     <script src="shared.js"></script>
     <script>
-      function openProfileModal() {
-        document.getElementById("profileModal").classList.add("open");
-      }
-      function closeProfileModal() {
-        document.getElementById("profileModal").classList.remove("open");
-      }
-      function openServiceModal() {
-        document.getElementById("serviceModal").classList.add("open");
-      }
-      function closeServiceModal() {
-        document.getElementById("serviceModal").classList.remove("open");
-      }
-      function closeGalleryAll() {
-        document.getElementById("galleryAllModal").classList.remove("open");
+      function filterHistory(status, btn) {
+        document
+          .querySelectorAll(".history-filters .filter-btn")
+          .forEach(function (b) {
+            b.classList.remove("active");
+          });
+        btn.classList.add("active");
+        document.querySelectorAll(".history-row").forEach(function (row) {
+          row.classList.remove("hidden");
+          if (status !== "all" && row.getAttribute("data-status") !== status)
+            row.classList.add("hidden");
+        });
       }
 
-      var avatarFile = null;
-      function previewAvatar(e) {
-        avatarFile = e.target.files[0];
-        if (!avatarFile) return;
-        var p = document.getElementById("pAvatarPreview");
-        p.src = URL.createObjectURL(avatarFile);
-        p.style.display = "block";
-      }
+      function openHistoryDetail(el) {
+        var row = el.closest("tr");
+        var d = row.dataset;
+        document.getElementById("hd-invoice").textContent =
+          d.invoice || "INV-2026-0000";
+        document.getElementById("hd-service-name").textContent =
+          d.service || "Service";
+        document.getElementById("hd-date").innerHTML =
+          '<i class="fa fa-calendar" style="margin-right:5px;"></i>' +
+          (d.date || "—");
+        document.getElementById("hd-amount").textContent = d.amount || "₹0";
+        document.getElementById("hd-client").textContent = d.client || "—";
+        document.getElementById("hd-location").textContent = d.location || "—";
+        document.getElementById("hd-duration").textContent = d.duration || "—";
+        document.getElementById("hd-description").textContent =
+          d.description || "—";
 
-      var partnerData = null;
-      function saveProfile(e) {
-        e.preventDefault();
-        partnerData = {
-          name: document.getElementById("pName").value,
-          bio: document.getElementById("pBio").value,
-          exp: document.getElementById("pExp").value,
-          projects: document.getElementById("pProjects").value,
-          areas: document.getElementById("pAreas").value,
-          langs: document.getElementById("pLangs").value,
-          phone: document.getElementById("pPhone").value,
-          email: document.getElementById("pEmail").value,
-          rating: document.getElementById("pRating").value,
-          reviews: document.getElementById("pReviews").value,
-          tags: document.getElementById("pTags").value,
-          avatarURL: avatarFile ? URL.createObjectURL(avatarFile) : null,
+        var statusPill = document.getElementById("hd-status-pill");
+        statusPill.className =
+          "detail-status-pill " + (d.status || "completed");
+        var statusLabels = {
+          completed: "✓ Completed",
+          pending: "⏳ In Progress",
+          cancelled: "✕ Cancelled",
         };
-        renderPartnerCard();
-        document.getElementById("svSetup").style.display = "none";
-        document.getElementById("svDashboard").style.display = "block";
-        closeProfileModal();
-      }
+        statusPill.textContent = statusLabels[d.status] || d.status;
 
-      function renderPartnerCard() {
-        var d = partnerData;
-        document.getElementById("dash-name").textContent =
-          d.name || "Partner Dashboard";
-        document.getElementById("dash-tagline").textContent = d.bio || "";
-        if (d.avatarURL) {
-          document.getElementById("pc-av-ph").style.display = "none";
-          var img = document.getElementById("pc-av-img");
-          img.src = d.avatarURL;
-          img.style.display = "block";
+        var payStrip = document.getElementById("hd-payment-strip");
+        payStrip.className = "payment-status-strip";
+        var ps = d.paymentStatus;
+        if (ps === "paid") {
+          payStrip.classList.add("paid");
+          payStrip.querySelector(".payment-status-strip-icon").innerHTML =
+            '<i class="fa fa-circle-check"></i>';
+          document.getElementById("hd-payment-label").textContent =
+            "Payment Received ✓";
+          document.getElementById("hd-payment-detail").textContent =
+            "Amount of " + d.amount + " received on " + d.paymentDate + ".";
+        } else if (ps === "pending") {
+          payStrip.classList.add("pending");
+          payStrip.querySelector(".payment-status-strip-icon").innerHTML =
+            '<i class="fa fa-hourglass-half"></i>';
+          document.getElementById("hd-payment-label").textContent =
+            "Payment Pending";
+          document.getElementById("hd-payment-detail").textContent =
+            "Payment of " + d.amount + " is yet to be received.";
         } else {
-          document.getElementById("pc-av-ph").style.display = "flex";
-          document.getElementById("pc-av-img").style.display = "none";
+          payStrip.classList.add("notpaid");
+          payStrip.querySelector(".payment-status-strip-icon").innerHTML =
+            '<i class="fa fa-circle-xmark"></i>';
+          document.getElementById("hd-payment-label").textContent =
+            "Payment Not Received";
+          document.getElementById("hd-payment-detail").textContent =
+            "Service was cancelled. Only cancellation charges apply.";
         }
-        document.getElementById("pc-name").textContent = d.name || "-";
-        document.getElementById("pc-bio").textContent = d.bio || "-";
-        var tagsEl = document.getElementById("pc-tags");
-        tagsEl.innerHTML = "";
-        (d.tags || "")
-          .split(",")
-          .map(function (t) {
-            return t.trim();
-          })
-          .filter(Boolean)
-          .forEach(function (t) {
-            tagsEl.innerHTML += '<span class="sv-tag">' + t + "</span>";
-          });
-        document.getElementById("pc-rating").textContent = d.rating || "-";
-        document.getElementById("pc-reviews").textContent = d.reviews
-          ? d.reviews + " reviews"
-          : "-";
-        var metaData = [
-          { icon: "fa-calendar-alt", label: "Experience", val: d.exp || "-" },
-          {
-            icon: "fa-map-marker-alt",
-            label: "Service Areas",
-            val: d.areas || "-",
-          },
-          { icon: "fa-language", label: "Languages", val: d.langs || "-" },
-          {
-            icon: "fa-project-diagram",
-            label: "Projects",
-            val: d.projects || "-",
-          },
-          { icon: "fa-phone", label: "Contact", val: d.phone || "-" },
-          { icon: "fa-envelope", label: "Email", val: d.email || "-" },
-        ];
-        document.getElementById("pc-meta").innerHTML = metaData
-          .map(function (m) {
-            return (
-              '<div class="sv-meta-col"><i class="fa ' +
-              m.icon +
-              '"></i><div><div class="sv-meta-lbl">' +
-              m.label +
-              '</div><div class="sv-meta-val">' +
-              m.val +
-              "</div></div></div>"
-            );
-          })
-          .join("");
-      }
 
-      var galleryData = [];
-      function addGalleryPhotos(e) {
-        Array.from(e.target.files).forEach(function (file) {
-          galleryData.push({
-            src: URL.createObjectURL(file),
-            caption: "Past Work",
-          });
-        });
-        renderGallery();
-        e.target.value = "";
-      }
-      function renderGallery() {
-        var grid = document.getElementById("galleryGrid");
-        grid.querySelectorAll(".sv-gitem").forEach(function (el) {
-          el.remove();
-        });
-        var MAX = 5;
-        var addBtn = grid.querySelector(".sv-gadd");
-        galleryData.slice(0, MAX).forEach(function (item, i) {
-          var tile = document.createElement("div");
-          tile.className = "sv-gitem";
-          if (i === MAX - 1 && galleryData.length > MAX) {
-            tile.innerHTML =
-              '<img src="' +
-              item.src +
-              '" alt=""><div class="sv-gitem-overlay-count" onclick="openGalleryAll()">+' +
-              (galleryData.length - MAX + 1) +
-              "<span>See All</span></div>";
-          } else {
-            tile.innerHTML =
-              '<img src="' +
-              item.src +
-              '" alt="' +
-              item.caption +
-              '" onclick="openLightbox(\'' +
-              item.src +
-              "','" +
-              item.caption +
-              "')\">" +
-              '<div class="sv-gitem-overlay"><span>' +
-              item.caption +
-              "</span></div>" +
-              '<div class="sv-gitem-del" onclick="removeGalleryItem(' +
-              i +
-              ')"><i class="fa fa-times"></i></div>';
-          }
-          grid.insertBefore(tile, addBtn);
-        });
-        document.getElementById("seeAllBtn").style.display =
-          galleryData.length > MAX ? "inline-flex" : "none";
-      }
-      function removeGalleryItem(idx) {
-        galleryData.splice(idx, 1);
-        renderGallery();
-        if (
-          document.getElementById("galleryAllModal").classList.contains("open")
-        )
-          openGalleryAll();
-      }
-      function openGalleryAll() {
-        var grid = document.getElementById("galleryAllGrid");
-        grid.innerHTML = "";
-        galleryData.forEach(function (item, i) {
-          var div = document.createElement("div");
-          div.className = "gallery-all-item";
-          div.innerHTML =
-            '<img src="' +
-            item.src +
-            '" alt="' +
-            item.caption +
-            '" onclick="openLightbox(\'' +
-            item.src +
-            "','" +
-            item.caption +
-            "')\">" +
-            '<div class="gallery-all-item-del" onclick="removeGalleryItem(' +
-            i +
-            ')"><i class="fa fa-times"></i></div>';
-          grid.appendChild(div);
-        });
-        document.getElementById("galleryAllTitle").textContent =
-          "All Photos (" + galleryData.length + ")";
-        document.getElementById("galleryAllModal").classList.add("open");
-      }
-
-      var svcImages = [];
-      function previewSvcImgs(e) {
-        svcImages = Array.from(e.target.files);
-        var p = document.getElementById("sImgPrev");
-        p.innerHTML = "";
-        svcImages.forEach(function (f) {
-          var img = document.createElement("img");
-          img.src = URL.createObjectURL(f);
-          p.appendChild(img);
-        });
-      }
-
-      function saveService(e) {
-        e.preventDefault();
-        var cat = document.getElementById("sCat").value,
-          stat = document.getElementById("sStat").value;
-        var title = document.getElementById("sTitle").value,
-          desc = document.getElementById("sDesc").value;
-        var price = document.getElementById("sPrice").value,
-          avail = document.getElementById("sAvail").value;
-        var loc = document.getElementById("sLoc").value,
-          exp = document.getElementById("sExp").value;
-        var team = document.getElementById("sTeam").value,
-          lang = document.getElementById("sLang").value;
-        var hl = document.getElementById("sHL").value;
-        var empty = document.getElementById("svcEmpty");
-        if (empty) empty.remove();
-        var imgURLs = svcImages.map(function (f) {
-          return URL.createObjectURL(f);
-        });
-        var coverSrc = imgURLs[0] || null;
-        var statLabel = stat.charAt(0).toUpperCase() + stat.slice(1);
-        var statColor = stat === "active" ? "var(--success)" : "var(--warning)";
-        if (imgURLs.length > 0) {
-          imgURLs.forEach(function (src) {
-            galleryData.push({ src: src, caption: title });
-          });
-          renderGallery();
+        var cStrip = document.getElementById("hd-complaint-strip");
+        cStrip.className = "complaint-strip";
+        var cIcon = document.getElementById("hd-complaint-icon");
+        if (d.complaint === "has-complaint") {
+          cStrip.classList.add("has-complaint");
+          cIcon.className = "fa fa-triangle-exclamation";
+          document.getElementById("hd-complaint-title").textContent =
+            "Complaint Filed – " + (d.complaintId || "");
+          document.getElementById("hd-complaint-detail").textContent =
+            d.complaintTitle
+              ? '"' + d.complaintTitle + '" — This complaint is currently open.'
+              : "A complaint has been filed.";
+        } else {
+          cStrip.classList.add("no-complaint");
+          cIcon.className = "fa fa-check-circle";
+          document.getElementById("hd-complaint-title").textContent =
+            "No Complaints Filed";
+          document.getElementById("hd-complaint-detail").textContent =
+            "No complaints were raised by the client for this service. Great work!";
         }
-        var pillDefs = [
-          { icon: "fa-map-marker-alt", label: "Location", val: loc },
-          { icon: "fa-calendar-check", label: "Availability", val: avail },
-          {
-            icon: "fa-briefcase",
-            label: "Experience",
-            val: exp ? exp + " Years" : "",
-          },
-          { icon: "fa-users", label: "Team Size", val: team },
-          { icon: "fa-language", label: "Languages", val: lang },
-        ].filter(function (p) {
-          return p.val;
-        });
-        var pillsHTML = pillDefs
-          .map(function (p) {
-            return (
-              '<div class="sv-row-pill"><div class="sv-row-pill-icon"><i class="fa ' +
-              p.icon +
-              '"></i></div><div><div class="sv-row-pill-lbl">' +
-              p.label +
-              '</div><div class="sv-row-pill-val">' +
-              p.val +
-              "</div></div></div>"
-            );
-          })
-          .join("");
-        var hlArr = hl
-          .split(",")
-          .map(function (h) {
-            return h.trim();
-          })
-          .filter(Boolean);
-        var hlHTML = hlArr.length
-          ? '<div class="sv-row-highlights">' +
-            hlArr
-              .map(function (h) {
-                return '<span class="sv-hl">✦ ' + h + "</span>";
-              })
-              .join("") +
-            "</div>"
-          : "";
-        var imgBlock = coverSrc
-          ? '<img src="' +
-            coverSrc +
-            '" alt="' +
-            title +
-            '"><div class="sv-row-img-grad"></div><div class="sv-row-img-hover"><i class="fa fa-expand-alt"></i><span>View Photo</span></div><div class="sv-row-badges"><span class="sv-row-cat">' +
-            cat +
-            '</span><span class="sv-row-status ' +
-            stat +
-            '">' +
-            statLabel +
-            "</span></div>" +
-            (imgURLs.length > 1
-              ? '<div class="sv-row-img-count"><i class="fa fa-images"></i> ' +
-                imgURLs.length +
-                " photos</div>"
-              : "")
-          : '<i class="fa fa-tools no-img-icon"></i><div class="sv-row-badges"><span class="sv-row-cat">' +
-            cat +
-            '</span><span class="sv-row-status ' +
-            stat +
-            '">' +
-            statLabel +
-            "</span></div>";
-        var thumbsHTML =
-          imgURLs.length > 0
-            ? '<div class="sv-row-thumbs"><span class="sv-row-thumb-label"><i class="fa fa-images" style="margin-right:5px;"></i>Photos</span><div class="sv-row-thumbs-list">' +
-              imgURLs
-                .map(function (src, i) {
-                  return (
-                    '<img class="sv-row-thumb" src="' +
-                    src +
-                    '" onclick="openLightbox(\'' +
-                    src +
-                    "','" +
-                    title +
-                    " – Photo " +
-                    (i + 1) +
-                    "')\">"
-                  );
-                })
-                .join("") +
-              "</div></div>"
-            : "";
-        var row = document.createElement("div");
-        row.className = "sv-service-row";
-        row.innerHTML =
-          '<div class="sv-row-main"><div class="sv-row-imgblock" onclick="openLightbox(\'' +
-          (coverSrc || "") +
-          "','" +
-          title +
-          "')\">" +
-          imgBlock +
-          '</div><div class="sv-row-info"><div class="sv-row-info-body"><div class="sv-row-title-row"><h3>' +
-          title +
-          '</h3><button class="sv-row-del-btn" onclick="deleteService(this)"><i class="fa fa-trash"></i></button></div><p class="sv-row-desc">' +
-          desc +
-          '</p><div class="sv-row-pills">' +
-          pillsHTML +
-          "</div>" +
-          hlHTML +
-          '</div><div class="sv-row-info-footer"><div><div style="display:flex;align-items:baseline;gap:5px;"><div class="sv-row-price">' +
-          price +
-          '</div><div class="sv-row-price-unit">/ service</div></div><div class="sv-row-price-note">Negotiable based on project scope</div></div><div style="text-align:right;"><div style="font-size:10px;color:var(--gray-400);text-transform:uppercase;letter-spacing:.8px;font-weight:700;margin-bottom:3px;font-family:var(--font-display);">Status</div><div style="font-size:14px;font-weight:800;color:' +
-          statColor +
-          ';font-family:var(--font-display);">● ' +
-          statLabel +
-          "</div></div></div></div></div>" +
-          thumbsHTML;
-        document.getElementById("servicesContainer").appendChild(row);
-        closeServiceModal();
-        document.getElementById("serviceForm").reset();
-        document.getElementById("sImgPrev").innerHTML = "";
-        svcImages = [];
+        document.getElementById("historyDetailModal").classList.add("open");
       }
-
-      function deleteService(btn) {
-        if (confirm("Remove this service?")) {
-          btn.closest(".sv-service-row").remove();
-          if (!document.querySelector(".sv-service-row")) {
-            var empty = document.createElement("div");
-            empty.id = "svcEmpty";
-            empty.className = "sv-empty";
-            empty.innerHTML =
-              '<i class="fa fa-inbox"></i><h4>No services yet</h4><p>Click "Add Service" to get started</p>';
-            document.getElementById("servicesContainer").appendChild(empty);
-          }
-        }
+      function closeHistoryDetail() {
+        document.getElementById("historyDetailModal").classList.remove("open");
       }
     </script>
   </body>
